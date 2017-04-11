@@ -3,5 +3,5 @@ project(leetcodesolutions)
 
 set(CMAKE_CXX_STANDARD 14)
 
-set(SOURCE_FILES main.cpp)
+set(SOURCE_FILES main.cpp LongestPalindromicSubstring.h)
 add_executable(leetcodesolutions ${SOURCE_FILES})
