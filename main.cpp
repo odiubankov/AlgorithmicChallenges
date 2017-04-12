@@ -1,9 +1,14 @@
 #include <iostream>
+#include <assert.h>
 #include "LongestPalindromicSubstring.h"
 
 int main() {
-    std::cout << "Hello, World!" << std::endl;
     longestpalindromicsubstr::Solution solution;
-    solution.longestPalindrome("aabaa");
+    assert("aabaa" == solution.longestPalindrome("aabaa"));
+    assert("bbb" == solution.longestPalindrome("aabbb"));
+    assert("bb" == solution.longestPalindrome("cbbd"));
+    assert("anana" == solution.longestPalindrome("bananas"));
+    assert("anana" == solution.longestPalindrome("bananas"));
+    assert("aaabaaa" == solution.longestPalindrome("aaabaaaa"));
     return 0;
 }
