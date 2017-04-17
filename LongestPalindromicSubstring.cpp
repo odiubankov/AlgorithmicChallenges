@@ -1,7 +1,8 @@
 #include "LongestPalindromicSubstring.h"
 #include <gtest/gtest.h>
 
-TEST(LongestPalindrome, test) {
+TEST(LongestPalindrome, test)
+{
     longestpalindromicsubstr::Solution solution;
     ASSERT_EQ("aabaa", solution.longestPalindrome("aabaa"));
     ASSERT_EQ("bbb", solution.longestPalindrome("aabbb"));
