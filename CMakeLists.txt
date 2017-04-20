@@ -9,6 +9,6 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
 add_subdirectory(lib/googletest-master)
 include_directories(lib/googletest-master/googletest/include)
 
-set(SOURCE_FILES LongestPalindromicSubstring.h LongestPalindromicSubstring.cpp LicenseKeyFormatting.h LicenseKeyFormatting.cpp PoorPigs.h PoorPigs.cpp)
+set(SOURCE_FILES LongestPalindromicSubstring.h LongestPalindromicSubstring.cpp LicenseKeyFormatting.h LicenseKeyFormatting.cpp PoorPigs.h PoorPigs.cpp LongestUniqCharsSubstr.h LongestUniqCharsSubstr.cpp)
 add_executable(leetcodesolutions ${SOURCE_FILES})
 target_link_libraries(leetcodesolutions gtest gtest_main)
