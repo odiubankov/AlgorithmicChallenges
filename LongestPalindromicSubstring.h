@@ -15,10 +15,10 @@ class Solution
 public:
     string longestPalindrome(string s)
     {
-        unsigned long longestPalindromeBegin = 0;
-        unsigned long longestPalindromeLength = 1;
-        vector<unsigned long> palindromes{1};
-        for (unsigned long i = 1; i < s.size(); ++i) {
+        long longestPalindromeBegin = 0;
+        long longestPalindromeLength = 1;
+        vector<long> palindromes{1};
+        for (long i = 1; i < static_cast<long>(s.size()); ++i) {
             for (auto palindromeIt = begin(palindromes); palindromeIt != end(palindromes);) {
                 auto newIndex = i - *palindromeIt - 1;
                 if (newIndex >= 0 && s[i] == s[newIndex]) {
