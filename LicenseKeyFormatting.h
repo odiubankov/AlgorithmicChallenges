@@ -4,6 +4,7 @@
 #define LEETCODESOLUTIONS_LICENSEKEYFORMATTING_H
 
 #include <string>
+#include <algorithm>
 
 using namespace std;
 
