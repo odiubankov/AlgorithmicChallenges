@@ -24,12 +24,12 @@ namespace basiccalc
 class Solution {
     int getOperand(const string& s, int& i)
     {
-        for (;i < s.size(); ++i)
+        for (;i < static_cast<int>(s.size()); ++i)
             if (s[i] != ' ')
                 break;
 
         string result{s[i++]};
-        for (;i < s.size(); ++i)
+        for (;i < static_cast<int>(s.size()); ++i)
             if (isdigit(s[i]))
                 result.append(1, s[i]);
             else
@@ -40,7 +40,7 @@ class Solution {
 
     char getOperator(const string& s, int& i)
     {
-        for (;i < s.size(); ++i)
+        for (;i < static_cast<int>(s.size()); ++i)
             if (s[i] != ' ')
                 return s[i++];
 
@@ -53,47 +53,51 @@ public:
         vector<function<int(int, int)>> operators;
         int i = 0;
         operands.push_back(getOperand(s, i));
-        while(i < s.size())
+        while(i < static_cast<int>(s.size()))
         {
             auto oper = getOperator(s, i);
             if (oper == '*')
             {
-                *operands.rend() = *operands.rend() *  getOperand(s, i);
+                *operands.rbegin() = *operands.rbegin() *  getOperand(s, i);
             }
             else if (oper == '/')
             {
-                *operands.rend() = *operands.rend() / getOperand(s, i);
+                *operands.rbegin() = *operands.rbegin() / getOperand(s, i);
             }
             else if (oper == '+')
             {
                 operands.push_back(getOperand(s, i));
                 operators.push_back([](int a, int b){ return a+ b;});
             }
-            else
+            else if (oper == '-')
             {
                 operands.push_back(getOperand(s, i));
                 operators.push_back([](int a, int b){ return a - b;});
             }
         }
 
+        if (operands.size() == 1)
+        {
+          return operands.front();
+        }
+
         auto operandIt = begin(operands);
         auto operand1 = *operandIt;
         ++operandIt;
         auto operand2 = *operandIt;
+        ++operandIt;
         auto operatorIt = begin(operators);
         auto result = (*operatorIt)(operand1, operand2);
         ++operatorIt;
         while (operandIt != end(operands))
         {
-            result = operators.front()(result, operands.front());
+            result = (*operatorIt)(result, *operandIt);
             ++operandIt;
             ++operatorIt;
         }
 
         return result;
     }
-
-
 };
 }//namespace basiccalc
 
