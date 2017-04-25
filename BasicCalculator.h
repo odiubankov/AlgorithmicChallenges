@@ -16,6 +16,7 @@ Some examples:
 #include <string>
 #include <functional>
 #include <vector>
+#include <cstdlib>
 
 using namespace std;
 
@@ -50,29 +51,28 @@ class Solution {
 public:
     int calculate(string s) {
         vector<int> operands;
-        vector<function<int(int, int)>> operators;
+        vector<bool> operators;
         int i = 0;
         operands.push_back(getOperand(s, i));
         while(i < static_cast<int>(s.size()))
         {
             auto oper = getOperator(s, i);
-            if (oper == '*')
-            {
-                *operands.rbegin() = *operands.rbegin() *  getOperand(s, i);
-            }
-            else if (oper == '/')
-            {
-                *operands.rbegin() = *operands.rbegin() / getOperand(s, i);
-            }
-            else if (oper == '+')
-            {
-                operands.push_back(getOperand(s, i));
-                operators.push_back([](int a, int b){ return a+ b;});
-            }
-            else if (oper == '-')
-            {
-                operands.push_back(getOperand(s, i));
-                operators.push_back([](int a, int b){ return a - b;});
+            switch (oper) {
+                case '*':
+                    *operands.rbegin() = *operands.rbegin() *  getOperand(s, i);
+                    break;
+                case '/':
+                    *operands.rbegin() = *operands.rbegin() / getOperand(s, i);
+                    break;
+                case '+':
+                    operands.push_back(getOperand(s, i));
+                    operators.push_back(true);
+                    break;
+                case '-':
+                    operands.push_back(getOperand(s, i));
+                    operators.push_back(false);
+                    break;
+                default:break;
             }
         }
 
@@ -82,16 +82,27 @@ public:
         }
 
         auto operandIt = begin(operands);
-        auto operand1 = *operandIt;
-        ++operandIt;
-        auto operand2 = *operandIt;
+        auto result = *operandIt;
         ++operandIt;
         auto operatorIt = begin(operators);
-        auto result = (*operatorIt)(operand1, operand2);
+        if (*operatorIt) {
+            result += *operandIt;
+        }
+        else {
+            result -= *operandIt;
+        }
+
         ++operatorIt;
+        ++operandIt;
         while (operandIt != end(operands))
         {
-            result = (*operatorIt)(result, *operandIt);
+            if (*operatorIt) {
+                result += *operandIt;
+            }
+            else {
+                result -= *operandIt;
+            }
+
             ++operandIt;
             ++operatorIt;
         }
