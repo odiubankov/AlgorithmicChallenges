@@ -12,6 +12,7 @@ getRandom: Returns a random element from current set of elements. Each element m
 #include <vector>
 #include <unordered_map>
 #include <time.h>
+#include <cstdlib>
 
 using namespace std;
 
@@ -19,8 +20,8 @@ namespace randomizedset
 {
   class RandomizedSet
   {
-    using ValuesArrayT = vector<int>;
-    using ValuesDictionaryT = unordered_map<int, int>;
+    using ValuesArrayT = vector<unsigned long>;
+    using ValuesDictionaryT = unordered_map<unsigned long, unsigned long>;
 
     ValuesArrayT _valuesArray;
     ValuesDictionaryT _valuesDictionary;

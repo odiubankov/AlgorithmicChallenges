@@ -14,7 +14,6 @@ Some examples:
 #define LEETCODESOLUTIONS_BASICCALCULATOR_H
 
 #include <string>
-#include <functional>
 #include <vector>
 #include <cstdlib>
 
