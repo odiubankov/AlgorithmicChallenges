@@ -33,10 +33,10 @@ public:
         while (i < points.size() - 2)
         {
             int equalPointsCnt = 0;
-            unordered_map<double, int> slopePoints;
+            unordered_map<long double, int> slopePoints;
             for (int j = i + 1; j < points.size(); ++j)
             {
-                auto slope = std::numeric_limits<double>::infinity();
+                auto slope = std::numeric_limits<long double>::infinity();
                 if (points[i].x == points[j].x)
                 {
                     if (points[i].y == points[j].y)
@@ -47,7 +47,7 @@ public:
                 }
                 else
                 {
-                    slope = static_cast<double>(points[i].y - points[j].y)/ static_cast<double>(points[i].x - points[j].x);
+                    slope = static_cast<long double>(points[i].y - points[j].y)/ static_cast<long double>(points[i].x - points[j].x);
                 }
 
                 auto emplaceRes = slopePoints.emplace(slope, 2);
