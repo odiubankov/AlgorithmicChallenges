@@ -6,57 +6,62 @@
 #include <unordered_map>
 #include <algorithm>
 #include <set>
+#include <iterator>
+#include <functional>
 
 using namespace std;
 
 namespace hackerrank
 {
-    using CoinsT = std::unordered_set<int>;
-    using ChangeCoinsT = set<vector<int>>;
-    using ChangeT = std::unordered_map<int, ChangeCoinsT>;
-    const ChangeCoinsT& makeChangeImpl(const CoinsT& coins, ChangeT& change, int money)
+    using MoneyChangeT = std::unordered_map<int, std::unordered_map<int, long long>>;
+    using CoinsT = vector<int>;
+    long long make_change_impl(CoinsT::iterator coinsBegin, const CoinsT::iterator& coinsEnd, int money, MoneyChangeT& moneyChange)
     {
-        auto changeIt = change.find(money);
-        if (changeIt != end(change))
-            return changeIt->second;
+      auto coinsCnt = distance(coinsBegin, coinsEnd);
+      if (coinsCnt == 0)
+        return 0;
 
-        ChangeCoinsT changeCoins;
-        for (int i = 1; i <= money/2; ++i)
+      auto firstNominal = *coinsBegin;
+      auto moneyIt = moneyChange.find(money);
+      if (moneyIt != end(moneyChange))
+      {
+        auto changeIt = moneyIt->second.find(firstNominal);
+        if (changeIt != end(moneyIt->second))
+          return changeIt->second;
+      }
+
+      long long change = 0;
+      for (auto coinsIt = coinsBegin; coinsIt != coinsEnd; ++coinsIt)
+      {
+        auto nominal = *coinsIt;
+        for (int i = 1;; ++i)
         {
-            auto firstIntervalChangeCoins = makeChangeImpl(coins, change, i);
-            auto secondIntervalChangeCoins = makeChangeImpl(coins, change, money - i);
-            for (const auto& firstItervalChange : firstIntervalChangeCoins)
-            {
-                for (const auto& secondIntervalChange : secondIntervalChangeCoins)
-                {
-                    vector<int> changeVal;
-                    changeVal.reserve(firstItervalChange.size() + secondIntervalChange.size());
-                    merge(begin(firstItervalChange), end(firstItervalChange), begin(secondIntervalChange), end(secondIntervalChange), back_inserter(changeVal));
-                    changeCoins.insert(move(changeVal));
-                }
-            }
-        }
+          auto rest = money - nominal * i;
+          if (rest < 0)
+            break;
 
-        if (coins.find(money) != end(coins))
-        {
-            changeCoins.insert(vector<int>{money});
-        }
+          if (0 == rest)
+          {
+            ++change;
+            break;
+          }
 
-        return change.emplace(money, changeCoins).first->second;
+          change += make_change_impl(coinsIt + 1, coinsEnd, rest, moneyChange);
+        }
+      }
+
+      moneyChange[money][firstNominal] = change;
+      return change;
     }
 
 
     long long make_change(vector<int> coins, int money)
     {
-        if (coins.empty())
-            return  0;
+      if (money == 0)
+        return 0;
 
-        if (money == 0)
-            return 0;
-
-        CoinsT coinsSet { begin(coins), end(coins) };
-        ChangeT change;
-        return makeChangeImpl(coinsSet, change, money).size();
+      MoneyChangeT moneyChange;
+      return make_change_impl(begin(coins), end(coins), money, moneyChange);
     }
 }
 

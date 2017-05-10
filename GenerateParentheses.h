@@ -17,6 +17,7 @@ For example, given n = 3, a solution set is:
 
 #include <vector>
 #include <string>
+#include <iterator>
 
 using namespace std;
 

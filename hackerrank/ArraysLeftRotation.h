@@ -2,6 +2,7 @@
 #define HACKERRANK_ARRAYSLEFTROTATION_H
 
 #include <vector>
+#include <iterator>
 
 using namespace std;
 
