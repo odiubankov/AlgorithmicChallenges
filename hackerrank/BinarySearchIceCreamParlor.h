@@ -17,12 +17,12 @@ namespace hackerrank
       : flavor(f)
       , index(i)
     {}
-
-    bool operator<(const IceCream& other)
-    {
-      return flavor < other.flavor;
-    }
   };
+
+  bool operator<(const IceCream& first, const IceCream& second)
+  {
+        return first.flavor < second.flavor;
+  }
 
   int binarySearch(int first, int last, vector<IceCream> arr, int search) {
     if (last < first)
