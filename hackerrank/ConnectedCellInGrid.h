@@ -3,6 +3,9 @@
 
 #include <vector>
 #include <queue>
+#include <set>
+#include <assert.h>
+#include <iostream>
 
 using namespace std;
 
@@ -14,13 +17,13 @@ namespace hackerrank
             return 0;
 
         vector< vector<bool> > visited(grid.size());
-        for (int i = 0; i < grid.size(); ++i)
+        for (std::size_t i = 0; i < grid.size(); ++i)
             visited[i] = vector<bool>(grid.front().size(), false);
 
         int region = 0;
-        for (int i = 0; i < grid.size(); ++i) {
-            for (int j = 0; j < grid.front().size(); ++i) {
-                queue<pair<int, int>> toCheckQueue;
+        for (std::size_t i = 0; i < grid.size(); ++i) {
+            for (std::size_t j = 0; j < grid.front().size(); ++j) {
+                queue<pair<size_t, size_t>> toCheckQueue;
                 toCheckQueue.emplace(i, j);
                 int current = 0;
                 while (!toCheckQueue.empty())
@@ -33,13 +36,20 @@ namespace hackerrank
                     }
 
                     visited[element.first][element.second] = true;
-                    if (grid[i][j] == 1)
-                        ++current;
+                    if (grid[element.first][element.second] == 1)
+                    {
+                      ++current;
+                    }
+                    else
+                    {
+                      toCheckQueue.pop();
+                      continue;
+                    }
 
                     auto left = element.second > 0;
                     auto up = element.first > 0;
-                    auto right = element.first < grid.front().size() - 1;
-                    auto down = element.second < grid.size() - 1;
+                    auto right = element.second < (grid.front().size() - 1);
+                    auto down = element.first < (grid.size() - 1);
 
                     if (left)
                         toCheckQueue.emplace(element.first, element.second - 1);
