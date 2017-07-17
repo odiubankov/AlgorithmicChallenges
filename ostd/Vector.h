@@ -9,32 +9,37 @@ namespace ostd{
 template<typename T>
 class Vector
 {
-    T* data;
-    std::size_t size;
-    std::size_t capacity;
+    T* _data;
+    std::size_t _size;
+    std::size_t _capacity;
 
 public:
     Vector()
-        : data{nullptr}
-        , size{0}
-        , capacity{0}
+        : _data{nullptr}
+        , _size{0}
+        , _capacity{0}
     {}
 
 
     Vector(const Vector& other)
     {
-        if (other.size > 0)
+        if (other._size > 0)
         {
             copy_from_other(other);
         }
         else
         {
-            data = nullptr;
-            size = 0;
-            capacity = 0;
+            _data = nullptr;
+            _size = 0;
+            _capacity = 0;
         }
     }
 
+
+    Vector(Vector&& other)
+    {
+      move_from_other(std::move(other));
+    }
 
 
     Vector& operator=(const Vector& other)
@@ -48,6 +53,17 @@ public:
     }
 
 
+    Vector& operator=(Vector&& other) noexcept
+    {
+      if (this == &other)
+        return *this;
+
+      clean_resources();
+      move_from_other(std::move(other));
+      return *this;
+    }
+
+
     ~Vector()
     {
         clean_resources();
@@ -56,55 +72,88 @@ public:
 
     void push_back(const T& val)
     {
-        if (size == capacity)
+        if (_size == _capacity)
             increase_capacity();
 
-        data[size] = val;
-        ++size;
+        _data[_size] = val;
+        ++_size;
     }
 
 
     void pop_back()
     {
-        if (0 == size)
-            throw std::out_of_range{};
+        if (0 == _size)
+            throw std::out_of_range{""};
 
-        --size;
-        if (size < capacity / 4)
+        --_size;
+        if (_size < _capacity / 4)
             decrease_capacity();
     }
 
 
+    std::size_t size() const noexcept { return _size; }
+
+
+    const T& operator[](std::size_t index) const
+    {
+      if (index >= size())
+        throw std::out_of_range{};
+
+      return _data[index];
+    }
+
+
+    T& operator[](std::size_t index)
+    {
+      if (index >= size())
+        throw std::out_of_range{""};
+
+      return _data[index];
+    }
+
 private:
     void copy_from_other(const Vector& other)
     {
-        data = new T[other.size];
-        std::copy(other.data, other.data + other.size, data);
-        capacity = size = other.size;
+        _data = new T[other._size];
+        std::copy(other._data, other._data + other._size, _data);
+        _capacity = _size = other._size;
+    }
+
+
+    void move_from_other(Vector&& other) noexcept
+    {
+      _size = other._size;
+      _capacity = other._capacity;
+      _data = other._data;
+
+      other._size = 0;
+      other._capacity = 0;
+      other._data = nullptr;
     }
 
 
     void clean_resources()
     {
-        if (nullptr != data)
+        if (nullptr != _data)
         {
-            delete [] data;
-            size = 0;
-            capacity = 0;
+            delete [] _data;
+            _data = nullptr;
+            _size = 0;
+            _capacity = 0;
         }
     }
 
 
     void increase_capacity()
     {
-        if (capacity == 0)
+        if (_capacity == 0)
         {
-            capacity = 1;
-            data = new T[capacity];
+            _capacity = 1;
+            _data = new T[_capacity];
         }
         else
         {
-            capacity *= 2;
+            _capacity *= 2;
             applyNewCapacity();
         }
     }
@@ -112,16 +161,19 @@ private:
 
     void decrease_capacity()
     {
-        capacity /= 2;
+        _capacity /= 2;
         applyNewCapacity();
     }
 
 
     void applyNewCapacity()
     {
-        auto tempData = new T[capacity];
-        std::copy(data, data + size, tempData);
-        std::swap(data, tempData);
+        auto tempData = new T[_capacity];
+        if (std::is_nothrow_move_constructible<T>::value)
+          std::move(_data, _data + _size, tempData);
+        else
+          std::copy(_data, _data + _size, tempData);
+        std::swap(_data, tempData);
         delete [] tempData;
     }
 };
