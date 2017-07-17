@@ -2,25 +2,33 @@
 #include <gtest/gtest.h>
 
 #define _CRTDBG_MAP_ALLOC  
-#include <stdlib.h>  
-#include <crtdbg.h> 
+#include <stdlib.h>
+
+#ifdef MSVC
+#include <crtdbg.h>
+#endif
 
 class MemoryGuard
 {
+#ifdef MSVC
   _CrtMemState s1, s2, s3;
-
+#endif
 public:
   MemoryGuard()
   {
+#ifdef MSVC
     _CrtMemCheckpoint(&s1);
+#endif
   }
 
   ~MemoryGuard()
   {
+#ifdef MSVC
     _CrtMemCheckpoint(&s2);
 
     if (_CrtMemDifference(&s3, &s1, &s2))
       _CrtMemDumpStatistics(&s3);
+#endif
   }
 };
 
@@ -48,9 +56,7 @@ TEST(Vector, push_back100)
 
 TEST(Vector, pop_back100x2)
 {
-  _CrtMemState s1, s2, s3;
-  _CrtMemCheckpoint(&s1);
-  {
+    MemoryGuard memGuard;
     ostd::Vector<int> vInt;
     for (int i = 0; i < 100; ++i)
     {
@@ -73,11 +79,6 @@ TEST(Vector, pop_back100x2)
     }
 
     ASSERT_EQ(vInt.size(), 0);
-  }
-  _CrtMemCheckpoint(&s2);
-
-  if (_CrtMemDifference(&s3, &s1, &s2))
-    _CrtMemDumpStatistics(&s3);
 }
 
 

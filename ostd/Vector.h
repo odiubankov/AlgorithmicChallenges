@@ -36,7 +36,7 @@ public:
     }
 
 
-    Vector(Vector&& other)
+    Vector(Vector&& other) noexcept
     {
       move_from_other(std::move(other));
     }
@@ -97,7 +97,7 @@ public:
     const T& operator[](std::size_t index) const
     {
       if (index >= size())
-        throw std::out_of_range{};
+        throw std::out_of_range{""};
 
       return _data[index];
     }
