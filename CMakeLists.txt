@@ -62,6 +62,6 @@ set(SOURCE_FILES
   hackerrank/IsPrimeNumberTest.h /
   
   ostd/Vector.cpp /
-  ostd/Vector.h )
+  ostd/Vector.h hackerrank/StringOneAway.h hackerrank/StringOneAway.cpp)
 add_executable(leetcodesolutions ${SOURCE_FILES})
 target_link_libraries(leetcodesolutions gtest gtest_main)
