@@ -64,6 +64,10 @@ set(SOURCE_FILES
   hackerrank/StringOneAway.cpp/
   
   ostd/Vector.cpp /
-  ostd/Vector.h ostd/UniquePtr.h ostd/UniquePtr.cpp)
+  ostd/Vector.h /
+  ostd/UniquePtr.h /
+  ostd/UniquePtr.cpp /
+  ostd/SharedPtr.h /
+  ostd/SharedPtr.cpp)
 add_executable(leetcodesolutions ${SOURCE_FILES})
 target_link_libraries(leetcodesolutions gtest gtest_main)

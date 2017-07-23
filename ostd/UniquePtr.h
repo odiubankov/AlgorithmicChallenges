@@ -2,6 +2,8 @@
 #define LEETCODESOLUTIONS_UNIQUEPTR_H
 
 #include <memory>
+#include <cassert>
+
 namespace ostd{
     template<typename T>
     class UniquePtr
@@ -53,6 +55,23 @@ namespace ostd{
             auto rawPtr = _rawPtr;
             _rawPtr = nullptr;
             return  rawPtr;
+        }
+
+        T* operator->() const noexcept
+        {
+            return _rawPtr;
+        }
+
+        T& operator*() noexcept
+        {
+            assert(nullptr != _rawPtr);
+            return *_rawPtr;
+        }
+
+        const T& operator*() const noexcept
+        {
+            assert(nullptr != _rawPtr);
+            return *_rawPtr;
         }
 
     private:
