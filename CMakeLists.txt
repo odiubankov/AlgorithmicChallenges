@@ -60,8 +60,10 @@ set(SOURCE_FILES
   hackerrank/ConnectedCellInGrid.h /
   hackerrank/BFSShortestReachInAGraph.h /
   hackerrank/IsPrimeNumberTest.h /
+  hackerrank/StringOneAway.h /
+  hackerrank/StringOneAway.cpp/
   
   ostd/Vector.cpp /
-  ostd/Vector.h hackerrank/StringOneAway.h hackerrank/StringOneAway.cpp)
+  ostd/Vector.h ostd/UniquePtr.h ostd/UniquePtr.cpp)
 add_executable(leetcodesolutions ${SOURCE_FILES})
 target_link_libraries(leetcodesolutions gtest gtest_main)
