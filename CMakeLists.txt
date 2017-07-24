@@ -34,6 +34,8 @@ set(SOURCE_FILES
   MaxPointsOnALine.cpp /
   SubStringSearchKMP.h /
   SubStringSearchKMP.cpp /
+  AsyncLogger.h /
+  AsyncLogger.cpp /
 
   hackerrank/ArraysLeftRotation.h /
   hackerrank/ArraysLeftRotation.cpp /
