@@ -71,7 +71,10 @@ set(SOURCE_FILES
   ostd/UniquePtr.cpp /
   ostd/SharedPtr.h /
   ostd/SharedPtr.cpp /
-  ostd/IsBaseOf.h
-  ostd/IsBaseOf.cpp)
+  ostd/IsBaseOf.h /
+  ostd/IsBaseOf.cpp /
+  ostd/IsSame.h /
+  ostd/IsSame.cpp)
+
 add_executable(leetcodesolutions ${SOURCE_FILES})
 target_link_libraries(leetcodesolutions gtest gtest_main)
