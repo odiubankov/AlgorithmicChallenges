@@ -24,7 +24,7 @@ namespace ostd
 
         ~SharedPtr()
         {
-            decrementRefCounter();
+            decrementRefCount();
         }
 
 
@@ -46,7 +46,7 @@ namespace ostd
 
         SharedPtr<T>& operator=(const SharedPtr<T>& other) noexcept
         {
-            decrementRefCounter();
+            decrementRefCount();
             copyFromOther(other);
             incrementRefCount();
             return *this;
@@ -55,7 +55,7 @@ namespace ostd
 
         SharedPtr<T>& operator=(SharedPtr<T>&& other) noexcept
         {
-            decrementRefCounter();
+            decrementRefCount();
             copyFromOther(other);
             other.reset();
             return *this;
@@ -95,7 +95,7 @@ namespace ostd
         }
 
 
-        void decrementRefCounter() noexcept
+        void decrementRefCount() noexcept
         {
             if (nullptr != _counter)
             {

@@ -74,7 +74,9 @@ set(SOURCE_FILES
   ostd/IsBaseOf.h /
   ostd/IsBaseOf.cpp /
   ostd/IsSame.h /
-  ostd/IsSame.cpp)
+  ostd/IsSame.cpp /
+  ostd/Distance.h /
+  ostd/Distance.cpp)
 
 add_executable(leetcodesolutions ${SOURCE_FILES})
 target_link_libraries(leetcodesolutions gtest gtest_main)
