@@ -38,7 +38,7 @@ set(SOURCE_FILES
   AsyncLogger.cpp /
 
   hackerrank/ArraysLeftRotation.h /
-  hackerrank/ArraysLeftRotation.cpp /
+        hackerrank/tests/ArraysLeftRotation.cpp /
   hackerrank/StringsMakingAnagrams.h /
   hackerrank/StringsMakingAnagrams.cpp /
   hackerrank/HashTablesRansomNote.h /
@@ -47,21 +47,21 @@ set(SOURCE_FILES
   hackerrank/QueuesATaleOfTwoStacks.h /
   hackerrank/TreesIsThisABinarySearchTree.h /
   hackerrank/HeapsFindTheRunningMedian.h /
-  hackerrank/HeapsFindTheRunningMedian.cpp /
+        hackerrank/tests/HeapsFindTheRunningMedian.cpp /
   hackerrank/TriesContacts.h /
   hackerrank/TriesContacts.cpp /
   hackerrank/SortingBubbleSort.h /
   hackerrank/SortingComparator.h /
   hackerrank/MergeSortCountingInversions.h /
-  hackerrank/MergeSortCountingInversions.cpp /
+        hackerrank/tests/MergeSortCountingInversions.cpp /
   hackerrank/DPCoinChange.h /
-  hackerrank/DPCoinChange.cpp /
+        hackerrank/tests/DPCoinChange.cpp /
   hackerrank/BinarySearchIceCreamParlor.h /
-  hackerrank/BinarySearchIceCreamParlor.cpp /
-  hackerrank/ConnectedCellInGrid.cpp /
+        hackerrank/tests/BinarySearchIceCreamParlor.cpp /
+        hackerrank/tests/ConnectedCellInGrid.cpp /
   hackerrank/ConnectedCellInGrid.h /
   hackerrank/BFSShortestReachInAGraph.h /
-  hackerrank/IsPrimeNumberTest.h /
+        hackerrank/IsPrimeNumber.h /
   hackerrank/StringOneAway.h /
   hackerrank/StringOneAway.cpp/
   
