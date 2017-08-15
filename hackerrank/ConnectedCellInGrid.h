@@ -25,7 +25,7 @@
 #include <vector>
 #include <queue>
 #include <set>
-#include <assert.h>
+#include <cassert>
 #include <iostream>
 
 namespace hackerrank

@@ -33,7 +33,7 @@ class Graph
     std::vector<std::vector<int>> _nodes;
 
 public:
-    Graph(int n)
+    explicit Graph(std::size_t n)
         : _nodes(n)
     {
     }
@@ -51,7 +51,7 @@ public:
         toVisit.emplace(start, 0);
         std::vector<int> distances(_nodes.size(), -1);
         while (!toVisit.empty()) {
-            auto node = toVisit.front();
+            const auto& node = toVisit.front();
             if (_visited[node.first]) {
                 toVisit.pop();
                 continue;

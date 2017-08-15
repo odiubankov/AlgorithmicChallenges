@@ -30,9 +30,9 @@
 namespace hackerrank
 {
 
-long long countInversionsImpl(const std::vector<int>::iterator &aBegin, const std::vector<int>::iterator &aEnd)
+std::size_t countInversionsImpl(const std::vector<int>::iterator &aBegin, const std::vector<int>::iterator &aEnd)
 {
-    auto arraySize = distance(aBegin, aEnd);
+    auto arraySize = static_cast<std::size_t>(std::distance(aBegin, aEnd));
     if (arraySize < 2)
         return 0;
 
@@ -55,7 +55,7 @@ long long countInversionsImpl(const std::vector<int>::iterator &aBegin, const st
     return invCnt;
 }
 
-long long count_inversions(std::vector<int> a)
+std::size_t count_inversions(std::vector<int> a)
 {
     return countInversionsImpl(begin(a), end(a));
 }

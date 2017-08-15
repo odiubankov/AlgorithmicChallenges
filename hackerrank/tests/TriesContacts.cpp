@@ -1,11 +1,12 @@
-#include "TriesContacts.h"
+#include "../TriesContacts.h"
 #include <gtest/gtest.h>
 
-#include <algorithm>
+namespace hackerrank
+{
 
 TEST(TriesContacts, test1)
 {
-    hackerrank::TriesContacts contacts;
+    TriesContacts contacts;
     contacts.addContact("hacker");
     contacts.addContact("hackerrank");
     auto result = contacts.getContacts("hac");
@@ -29,6 +30,5 @@ TEST(TriesContacts, test1)
     ASSERT_TRUE(find(begin(result), end(result), "hackerrank") != end(result));
 }
 
-TEST(TriesContacts, test2)
-{
-}
+}//namespace hackerrank
+

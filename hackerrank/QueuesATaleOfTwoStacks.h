@@ -35,7 +35,8 @@ class MyQueue
     {
         if (stack_oldest_on_top.empty()) {
             while (!stack_newest_on_top.empty()) {
-                stack_oldest_on_top.push(stack_newest_on_top.top());
+                const auto& stackNewestOnTopTop = stack_newest_on_top.top();
+                stack_oldest_on_top.push(stackNewestOnTopTop);
                 stack_newest_on_top.pop();
             }
         }

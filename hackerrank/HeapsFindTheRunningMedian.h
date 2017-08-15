@@ -35,23 +35,25 @@ void pushValueAndSetMedian(std::vector<int> &leftHeap, std::vector<int> &rightHe
 {
     if (leftHeap.empty() || val <= leftHeap.front() || rightHeap.empty() || val <= rightHeap.front()) {
         leftHeap.push_back(val);
-        push_heap(begin(leftHeap), end(leftHeap), std::less<int>());
+        push_heap(begin(leftHeap), end(leftHeap), std::less<>());
 
         if ((leftHeap.size() - rightHeap.size()) == 2) {
-            rightHeap.push_back(leftHeap.front());
-            push_heap(begin(rightHeap), end(rightHeap), std::greater<int>());
-            pop_heap(begin(leftHeap), end(leftHeap), std::less<int>());
+            const auto& leftHeapFront =leftHeap.front();
+            rightHeap.push_back(leftHeapFront);
+            push_heap(begin(rightHeap), end(rightHeap), std::greater<>());
+            pop_heap(begin(leftHeap), end(leftHeap), std::less<>());
             leftHeap.pop_back();
         }
     }
     else {
         rightHeap.push_back(val);
-        push_heap(begin(rightHeap), end(rightHeap), std::greater<int>());
+        push_heap(begin(rightHeap), end(rightHeap), std::greater<>());
 
         if (rightHeap.size() > leftHeap.size()) {
-            leftHeap.push_back(rightHeap.front());
-            push_heap(begin(leftHeap), end(leftHeap), std::less<int>());
-            pop_heap(begin(rightHeap), end(rightHeap), std::greater<int>());
+            const auto& rightHeapFront = rightHeap.front();
+            leftHeap.push_back(rightHeapFront);
+            push_heap(begin(leftHeap), end(leftHeap), std::less<>());
+            pop_heap(begin(rightHeap), end(rightHeap), std::greater<>());
             rightHeap.pop_back();
         }
     }
@@ -62,9 +64,8 @@ float getMedian(const std::vector<int> &leftHeap, const std::vector<int> &rightH
     if (leftHeap.size() > rightHeap.size()) {
         return static_cast<float>(leftHeap.front());
     }
-    else {
-        return (leftHeap.front() + rightHeap.front()) / 2.0f;
-    }
+
+    return (leftHeap.front() + rightHeap.front()) / 2.0f;
 }
 
 int heapsRunningMedian()
@@ -74,7 +75,7 @@ int heapsRunningMedian()
     std::vector<int> leftHeap;
     std::vector<int> rightHeap;
 
-    int n;
+    std::size_t n;
     std::cin >> n;
     std::vector<int> a(n);
     for (int a_i = 0; a_i < n; a_i++) {
