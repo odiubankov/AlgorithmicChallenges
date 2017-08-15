@@ -1,4 +1,4 @@
-/*
+/**
 * Heaps: Find the Running Median
 *
 * Cracking the Coding Interview Challenges

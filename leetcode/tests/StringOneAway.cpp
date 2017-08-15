@@ -1,4 +1,4 @@
-#include "StringOneAway.h"
+#include "../StringOneAway.h"
 #include <gtest/gtest.h>
 
 TEST(StringOneAway, test1)

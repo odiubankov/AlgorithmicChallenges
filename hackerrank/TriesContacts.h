@@ -1,4 +1,4 @@
-/*
+/**
 * Tries: Contacts
 *
 * Cracking the Coding Interview Challenges

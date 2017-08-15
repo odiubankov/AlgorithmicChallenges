@@ -1,4 +1,4 @@
-/*
+/**
 * Stacks: Balanced Brackets
 *
 * Cracking the Coding Interview Challenges

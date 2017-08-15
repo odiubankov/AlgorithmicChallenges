@@ -1,4 +1,4 @@
-/*
+/**
 * Linked Lists: Detect a Cycle
 *
 * Cracking the Coding Interview Challenges

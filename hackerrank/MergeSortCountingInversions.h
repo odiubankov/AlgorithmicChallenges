@@ -1,4 +1,4 @@
-/*
+/**
 * Merge Sort: Counting Inversions
 *
 * Cracking the Coding Interview Challenges

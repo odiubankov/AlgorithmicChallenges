@@ -1,4 +1,4 @@
-/*
+/**
 * Queues: A Tale of Two Stacks
 *
 * Cracking the Coding Interview Challenges

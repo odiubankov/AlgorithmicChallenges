@@ -1,4 +1,4 @@
-/*
+/**
 * Time Complexity: Primality
 *
 * Cracking the Coding Interview Challenges

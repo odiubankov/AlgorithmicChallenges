@@ -1,4 +1,4 @@
-/*
+/**
 * Sorting: Bubble Sort
 *
 * Cracking the Coding Interview Challenges

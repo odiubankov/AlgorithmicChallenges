@@ -1,4 +1,4 @@
-/*
+/**
 * Arrays: Left Rotation
 *
 * Cracking the Coding Interview Challenges

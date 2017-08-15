@@ -1,4 +1,4 @@
-/*
+/**
 * Binary Search: Ice Cream Parlor
 *
 * Cracking the Coding Interview Challenges

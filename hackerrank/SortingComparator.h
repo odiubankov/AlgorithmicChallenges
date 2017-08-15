@@ -1,4 +1,4 @@
-/*
+/**
 * Sorting: Comparator
 *
 * Cracking the Coding Interview Challenges

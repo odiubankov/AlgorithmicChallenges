@@ -1,4 +1,4 @@
-/*
+/**
 * Hash Tables: Ransom Note
 *
 * Cracking the Coding Interview Challenges

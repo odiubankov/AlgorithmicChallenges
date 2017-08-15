@@ -1,4 +1,4 @@
-/*
+/**
 * Trees: Is This a Binary Search Tree?
 *
 * Cracking the Coding Interview Challenges

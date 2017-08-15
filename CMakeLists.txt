@@ -13,31 +13,33 @@ add_subdirectory(libs/googletest)
 include_directories(libs/googletest/googletest/include)
 
 set(SOURCE_FILES
-        FourSum.h /
-        FourSum.cpp /
-        LongestPalindromicSubstring.h /
-        LongestPalindromicSubstring.cpp /
-        LicenseKeyFormatting.h /
-        LicenseKeyFormatting.cpp /
-        PoorPigs.h PoorPigs.cpp /
-        LongestUniqCharsSubstr.h /
-        LongestUniqCharsSubstr.cpp /
-        BasicCalculator.h /
-        BasicCalculator.cpp /
-        RandomizedSet.h /
-        RandomizedSet.cpp /
-        GenerateParentheses.h /
-        GenerateParentheses.cpp /
-        WordSearch.h /
-        WordSearch.cpp /
-        MaxPointsOnALine.h /
-        MaxPointsOnALine.cpp /
-        SubStringSearchKMP.h /
-        SubStringSearchKMP.cpp /
         AsyncLogger.h /
         AsyncLogger.cpp /
-        StringOneAway.h /
-        StringOneAway.cpp/
+
+        leetcode/FourSum.h /
+        leetcode/LongestPalindromicSubstring.h /
+        leetcode/LicenseKeyFormatting.h /
+        leetcode/PoorPigs.h
+        leetcode/LongestUniqCharsSubstr.h /
+        leetcode/BasicCalculator.h /
+        leetcode/RandomizedSet.h /
+        leetcode/GenerateParentheses.h /
+        leetcode/WordSearch.h /
+        leetcode/MaxPointsOnALine.h /
+        leetcode/SubStringSearchKMP.h /
+        leetcode/StringOneAway.h /
+
+        leetcode/tests/LongestPalindromicSubstring.cpp /
+        leetcode/tests/LicenseKeyFormatting.cpp /
+        leetcode/tests/PoorPigs.cpp /
+        leetcode/tests/LongestUniqCharsSubstr.cpp /
+        leetcode/tests/BasicCalculator.cpp /
+        leetcode/tests/RandomizedSet.cpp /
+        leetcode/tests/GenerateParentheses.cpp /
+        leetcode/tests/WordSearch.cpp /
+        leetcode/tests/MaxPointsOnALine.cpp /
+        leetcode/tests/SubStringSearchKMP.cpp /
+        leetcode/tests/StringOneAway.cpp/
 
         hackerrank/ArraysLeftRotation.h /
         hackerrank/StringsMakingAnagrams.h /
