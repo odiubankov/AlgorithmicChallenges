@@ -20,7 +20,7 @@ set(SOURCE_FILES
         leetcode/LongestPalindromicSubstring.h /
         leetcode/LicenseKeyFormatting.h /
         leetcode/PoorPigs.h
-        leetcode/LongestUniqCharsSubstr.h /
+        leetcode/LongestUniqCharsSubstr .h /
         leetcode/BasicCalculator.h /
         leetcode/RandomizedSet.h /
         leetcode/GenerateParentheses.h /
@@ -66,20 +66,7 @@ set(SOURCE_FILES
         hackerrank/tests/StringsMakingAnagrams.cpp /
         hackerrank/tests/HeapsFindTheRunningMedian.cpp /
         hackerrank/tests/TriesContacts.cpp /
-        hackerrank/tests/MergeSortCountingInversions.cpp /
-
-        ostd/Vector.cpp /
-        ostd/Vector.h /
-        ostd/UniquePtr.h /
-        ostd/UniquePtr.cpp /
-        ostd/SharedPtr.h /
-        ostd/SharedPtr.cpp /
-        ostd/IsBaseOf.h /
-        ostd/IsBaseOf.cpp /
-        ostd/IsSame.h /
-        ostd/IsSame.cpp /
-        ostd/Distance.h /
-        ostd/Distance.cpp)
+        hackerrank/tests/MergeSortCountingInversions.cpp)
 
 add_executable(algorithmicchallenges ${SOURCE_FILES})
 target_link_libraries(algorithmicchallenges gtest gtest_main)
