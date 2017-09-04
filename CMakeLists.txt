@@ -13,9 +13,6 @@ add_subdirectory(libs/googletest)
 include_directories(libs/googletest/googletest/include)
 
 set(SOURCE_FILES
-        AsyncLogger.h /
-        AsyncLogger.cpp /
-
         leetcode/FourSum.h /
         leetcode/LongestPalindromicSubstring.h /
         leetcode/LicenseKeyFormatting.h /
