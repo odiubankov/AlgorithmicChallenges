@@ -26,17 +26,17 @@ set(SOURCE_FILES
         leetcode/SubStringSearchKMP.h /
         leetcode/StringOneAway.h /
 
-        leetcode/tests/LongestPalindromicSubstring.cpp /
-        leetcode/tests/LicenseKeyFormatting.cpp /
-        leetcode/tests/PoorPigs.cpp /
-        leetcode/tests/LongestUniqCharsSubstr.cpp /
-        leetcode/tests/BasicCalculator.cpp /
-        leetcode/tests/RandomizedSet.cpp /
-        leetcode/tests/GenerateParentheses.cpp /
-        leetcode/tests/WordSearch.cpp /
-        leetcode/tests/MaxPointsOnALine.cpp /
-        leetcode/tests/SubStringSearchKMP.cpp /
-        leetcode/tests/StringOneAway.cpp/
+        leetcode/tests/LongestPalindromicSubstringTest.cpp /
+        leetcode/tests/LicenseKeyFormattingTest.cpp /
+        leetcode/tests/PoorPigsTest.cpp /
+        leetcode/tests/LongestUniqCharsSubstrTest.cpp /
+        leetcode/tests/BasicCalculatorTest.cpp /
+        leetcode/tests/RandomizedSetTest.cpp /
+        leetcode/tests/GenerateParenthesesTest.cpp /
+        leetcode/tests/WordSearchTest.cpp /
+        leetcode/tests/MaxPointsOnALineTest.cpp /
+        leetcode/tests/SubStringSearchKMPTest.cpp /
+        leetcode/tests/StringOneAwayTest.cpp/
 
         hackerrank/ArraysLeftRotation.h /
         hackerrank/StringsMakingAnagrams.h /
@@ -56,14 +56,14 @@ set(SOURCE_FILES
         hackerrank/DPCoinChange.h /
         hackerrank/BinarySearchIceCreamParlor.h /
 
-        hackerrank/tests/BinarySearchIceCreamParlor.cpp /
-        hackerrank/tests/ConnectedCellInGrid.cpp /
-        hackerrank/tests/DPCoinChange.cpp /
-        hackerrank/tests/ArraysLeftRotation.cpp /
-        hackerrank/tests/StringsMakingAnagrams.cpp /
-        hackerrank/tests/HeapsFindTheRunningMedian.cpp /
-        hackerrank/tests/TriesContacts.cpp /
-        hackerrank/tests/MergeSortCountingInversions.cpp)
+        hackerrank/tests/BinarySearchIceCreamParlorTest.cpp /
+        hackerrank/tests/ConnectedCellInGridTest.cpp /
+        hackerrank/tests/DPCoinChangeTest.cpp /
+        hackerrank/tests/ArraysLeftRotationTest.cpp /
+        hackerrank/tests/StringsMakingAnagramsTest.cpp /
+        hackerrank/tests/HeapsFindTheRunningMedianTest.cpp /
+        hackerrank/tests/TriesContactsTest.cpp /
+        hackerrank/tests/MergeSortCountingInversionsTest.cpp)
 
 add_executable(algorithmicchallenges ${SOURCE_FILES})
 target_link_libraries(algorithmicchallenges gtest gtest_main)
