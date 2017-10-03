@@ -16,8 +16,8 @@ set(SOURCE_FILES
         leetcode/FourSum.h /
         leetcode/LongestPalindromicSubstring.h /
         leetcode/LicenseKeyFormatting.h /
-        leetcode/PoorPigs.h
-        leetcode/LongestUniqCharsSubstr .h /
+        leetcode/PoorPigs.h /
+        leetcode/LongestUniqCharsSubstr.h /
         leetcode/BasicCalculator.h /
         leetcode/RandomizedSet.h /
         leetcode/GenerateParentheses.h /
@@ -36,7 +36,7 @@ set(SOURCE_FILES
         leetcode/tests/WordSearchTest.cpp /
         leetcode/tests/MaxPointsOnALineTest.cpp /
         leetcode/tests/SubStringSearchKMPTest.cpp /
-        leetcode/tests/StringOneAwayTest.cpp/
+        leetcode/tests/StringOneAwayTest.cpp /
 
         hackerrank/ArraysLeftRotation.h /
         hackerrank/StringsMakingAnagrams.h /
@@ -63,7 +63,13 @@ set(SOURCE_FILES
         hackerrank/tests/StringsMakingAnagramsTest.cpp /
         hackerrank/tests/HeapsFindTheRunningMedianTest.cpp /
         hackerrank/tests/TriesContactsTest.cpp /
-        hackerrank/tests/MergeSortCountingInversionsTest.cpp)
+        hackerrank/tests/MergeSortCountingInversionsTest.cpp /
+
+        sedgewick/FibonacciNumber.h /
+
+        sedgewick/FibonacciNumber.cpp /
+
+        sedgewick/tests/FibonacciNumberTest.cpp /)
 
 add_executable(algorithmicchallenges ${SOURCE_FILES})
 target_link_libraries(algorithmicchallenges gtest gtest_main)

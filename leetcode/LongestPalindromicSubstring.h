@@ -36,7 +36,7 @@ public:
         std::vector<unsigned long> palindromes{1};
         for (long i = 1; i < static_cast<long>(s.size()); ++i) {
             for (auto palindromeIt = begin(palindromes); palindromeIt != end(palindromes);) {
-                auto newIndex = i - *palindromeIt - 1;
+                long newIndex = i - *palindromeIt - 1;
                 if (newIndex >= 0 && s[i] == s[newIndex]) {
                     *palindromeIt += 2;
                     ++palindromeIt;
