@@ -68,14 +68,17 @@ set(SOURCE_FILES
         sedgewick/FibonacciNumber.h /
         sedgewick/FixInfixExpression.h /
         sedgewick/GreatestCommonDivisor.h /
+        sedgewick/InfixToPostfix.h /
 
         sedgewick/FibonacciNumber.cpp /
         sedgewick/FixInfixExpression.cpp /
         sedgewick/GreatestCommonDivisor.cpp /
+        sedgewick/InfixToPostfix.cpp /
 
         sedgewick/tests/FibonacciNumberTest.cpp /
         sedgewick/tests/FixInfixExpressionTest.cpp /
-        sedgewick/tests/GreatestCommonDivisorTest.cpp /)
+        sedgewick/tests/GreatestCommonDivisorTest.cpp /
+        sedgewick/tests/InfixToPostfixTest.cpp /)
 
 add_executable(algorithmicchallenges ${SOURCE_FILES})
 target_link_libraries(algorithmicchallenges gtest gtest_main)
