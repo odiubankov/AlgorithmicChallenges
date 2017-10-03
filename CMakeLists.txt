@@ -66,10 +66,16 @@ set(SOURCE_FILES
         hackerrank/tests/MergeSortCountingInversionsTest.cpp /
 
         sedgewick/FibonacciNumber.h /
+        sedgewick/FixInfixExpression.h /
+        sedgewick/GreatestCommonDivisor.h /
 
         sedgewick/FibonacciNumber.cpp /
+        sedgewick/FixInfixExpression.cpp /
+        sedgewick/GreatestCommonDivisor.cpp /
 
-        sedgewick/tests/FibonacciNumberTest.cpp / sedgewick/FixInfixExpression.h sedgewick/FixInfixExpression.cpp sedgewick/tests/FixInfixExpressionTest.cpp)
+        sedgewick/tests/FibonacciNumberTest.cpp /
+        sedgewick/tests/FixInfixExpressionTest.cpp /
+        sedgewick/tests/GreatestCommonDivisorTest.cpp /)
 
 add_executable(algorithmicchallenges ${SOURCE_FILES})
 target_link_libraries(algorithmicchallenges gtest gtest_main)
