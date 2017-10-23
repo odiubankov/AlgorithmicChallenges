@@ -34,12 +34,5 @@ namespace hackerrank
     ASSERT_EQ(12, getMinLibAccessCost(hackerLand));
   }
 
-  TEST(RoadsAndLibs, testInput)
-  {
-    auto input = readInput();
-    ASSERT_EQ(4, getMinLibAccessCost(input.at(0)));
-    ASSERT_EQ(12, getMinLibAccessCost(input.at(1)));
-  }
-
 }//namespace hackerrank
 
