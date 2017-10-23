@@ -55,6 +55,7 @@ set(SOURCE_FILES
         hackerrank/IsPrimeNumber.h /
         hackerrank/DPCoinChange.h /
         hackerrank/BinarySearchIceCreamParlor.h /
+        hackerrank/RoadsAndLibs.h /
 
         hackerrank/tests/BinarySearchIceCreamParlorTest.cpp /
         hackerrank/tests/ConnectedCellInGridTest.cpp /
@@ -64,6 +65,7 @@ set(SOURCE_FILES
         hackerrank/tests/HeapsFindTheRunningMedianTest.cpp /
         hackerrank/tests/TriesContactsTest.cpp /
         hackerrank/tests/MergeSortCountingInversionsTest.cpp /
+        hackerrank/tests/RoadsAndLibsTest.cpp /
 
         sedgewick/FibonacciNumber.h /
         sedgewick/FixInfixExpression.h /
