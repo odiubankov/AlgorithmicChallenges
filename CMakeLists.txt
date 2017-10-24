@@ -56,6 +56,7 @@ set(SOURCE_FILES
         hackerrank/DPCoinChange.h /
         hackerrank/BinarySearchIceCreamParlor.h /
         hackerrank/RoadsAndLibs.h /
+        hackerrank/BigSorting.h /
 
         hackerrank/tests/BinarySearchIceCreamParlorTest.cpp /
         hackerrank/tests/ConnectedCellInGridTest.cpp /
@@ -71,16 +72,19 @@ set(SOURCE_FILES
         sedgewick/FixInfixExpression.h /
         sedgewick/GreatestCommonDivisor.h /
         sedgewick/InfixToPostfix.h /
+        sedgewick/PostfixExprEval.h /
 
         sedgewick/FibonacciNumber.cpp /
         sedgewick/FixInfixExpression.cpp /
         sedgewick/GreatestCommonDivisor.cpp /
         sedgewick/InfixToPostfix.cpp /
+        sedgewick/PostfixExprEval.cpp / 
 
         sedgewick/tests/FibonacciNumberTest.cpp /
         sedgewick/tests/FixInfixExpressionTest.cpp /
         sedgewick/tests/GreatestCommonDivisorTest.cpp /
-        sedgewick/tests/InfixToPostfixTest.cpp / sedgewick/PostfixExprEval.h sedgewick/PostfixExprEval.cpp sedgewick/tests/PostfixExprEvalTest.cpp)
+        sedgewick/tests/InfixToPostfixTest.cpp / 
+        sedgewick/tests/PostfixExprEvalTest.cpp)
 
 add_executable(algorithmicchallenges ${SOURCE_FILES})
 target_link_libraries(algorithmicchallenges gtest gtest_main)
