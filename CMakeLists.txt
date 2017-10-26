@@ -57,6 +57,7 @@ set(SOURCE_FILES
         hackerrank/BinarySearchIceCreamParlor.h /
         hackerrank/RoadsAndLibs.h /
         hackerrank/BigSorting.h /
+        hackerrank/Equal.h /
 
         hackerrank/tests/BinarySearchIceCreamParlorTest.cpp /
         hackerrank/tests/ConnectedCellInGridTest.cpp /
@@ -67,6 +68,7 @@ set(SOURCE_FILES
         hackerrank/tests/TriesContactsTest.cpp /
         hackerrank/tests/MergeSortCountingInversionsTest.cpp /
         hackerrank/tests/RoadsAndLibsTest.cpp /
+        hackerrank/tests/EqualTest.cpp /
 
         sedgewick/FibonacciNumber.h /
         sedgewick/FixInfixExpression.h /
