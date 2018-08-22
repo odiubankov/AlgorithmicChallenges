@@ -12,73 +12,13 @@ endif ()
 add_subdirectory(libs/googletest)
 include_directories(libs/googletest/googletest/include)
 
-set(SOURCE_FILES
-        leetcode/FourSum.h /
-        leetcode/LongestPalindromicSubstring.h /
-        leetcode/LicenseKeyFormatting.h /
-        leetcode/PoorPigs.h /
-        leetcode/LongestUniqCharsSubstr.h /
-        leetcode/BasicCalculator.h /
-        leetcode/RandomizedSet.h /
-        leetcode/GenerateParentheses.h /
-        leetcode/WordSearch.h /
-        leetcode/MaxPointsOnALine.h /
-        leetcode/SubStringSearchKMP.h /
-        leetcode/StringOneAway.h /
-
-        leetcode/tests/LongestPalindromicSubstringTest.cpp /
-        leetcode/tests/LicenseKeyFormattingTest.cpp /
-        leetcode/tests/PoorPigsTest.cpp /
-        leetcode/tests/LongestUniqCharsSubstrTest.cpp /
-        leetcode/tests/BasicCalculatorTest.cpp /
-        leetcode/tests/RandomizedSetTest.cpp /
-        leetcode/tests/GenerateParenthesesTest.cpp /
-        leetcode/tests/WordSearchTest.cpp /
-        leetcode/tests/MaxPointsOnALineTest.cpp /
-        leetcode/tests/SubStringSearchKMPTest.cpp /
-        leetcode/tests/StringOneAwayTest.cpp /
-
-        hackerrank/ArraysLeftRotation.h /
-        hackerrank/StringsMakingAnagrams.h /
-        hackerrank/HashTablesRansomNote.h /
-        hackerrank/LinkedListsDetectCycle.h /
-        hackerrank/StacksBalancedBrackets.h /
-        hackerrank/QueuesATaleOfTwoStacks.h /
-        hackerrank/TreesIsThisABinarySearchTree.h /
-        hackerrank/HeapsFindTheRunningMedian.h /
-        hackerrank/TriesContacts.h /
-        hackerrank/SortingBubbleSort.h /
-        hackerrank/SortingComparator.h /
-        hackerrank/MergeSortCountingInversions.h /
-        hackerrank/ConnectedCellInGrid.h /
-        hackerrank/BFSShortestReachInAGraph.h /
-        hackerrank/IsPrimeNumber.h /
-        hackerrank/DPCoinChange.h /
-        hackerrank/BinarySearchIceCreamParlor.h /
-
-        hackerrank/tests/BinarySearchIceCreamParlorTest.cpp /
-        hackerrank/tests/ConnectedCellInGridTest.cpp /
-        hackerrank/tests/DPCoinChangeTest.cpp /
-        hackerrank/tests/ArraysLeftRotationTest.cpp /
-        hackerrank/tests/StringsMakingAnagramsTest.cpp /
-        hackerrank/tests/HeapsFindTheRunningMedianTest.cpp /
-        hackerrank/tests/TriesContactsTest.cpp /
-        hackerrank/tests/MergeSortCountingInversionsTest.cpp /
-
-        sedgewick/FibonacciNumber.h /
-        sedgewick/FixInfixExpression.h /
-        sedgewick/GreatestCommonDivisor.h /
-        sedgewick/InfixToPostfix.h /
-
-        sedgewick/FibonacciNumber.cpp /
-        sedgewick/FixInfixExpression.cpp /
-        sedgewick/GreatestCommonDivisor.cpp /
-        sedgewick/InfixToPostfix.cpp /
-
-        sedgewick/tests/FibonacciNumberTest.cpp /
-        sedgewick/tests/FixInfixExpressionTest.cpp /
-        sedgewick/tests/GreatestCommonDivisorTest.cpp /
-        sedgewick/tests/InfixToPostfixTest.cpp / sedgewick/PostfixExprEval.h sedgewick/PostfixExprEval.cpp sedgewick/tests/PostfixExprEvalTest.cpp)
+file(GLOB_RECURSE SOURCE_FILES
+        hackerrank/*.cpp /
+        hackerrank/*.h /
+        leetcode/*.cpp /
+        leetcode/*.h /
+        sedgewick/*.cpp /
+        sedgewick/*.h)
 
 add_executable(algorithmicchallenges ${SOURCE_FILES})
 target_link_libraries(algorithmicchallenges gtest gtest_main)
