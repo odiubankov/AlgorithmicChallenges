@@ -1,6 +1,6 @@
-#include <bits/stdc++.h>
+#pragma once
 
-using namespace std;
+#include <bits/stdc++.h>
 
 vector<string> split_string(string);
 
