@@ -45,7 +45,7 @@ public:
     unsigned long maxPoints(std::vector<Point> &points)
     {
         if (points.size() < 3)
-            return points.size();
+            return static_cast<unsigned long>(points.size());
 
         unsigned long maxPointsOnLine = 2;
         int i = 0;

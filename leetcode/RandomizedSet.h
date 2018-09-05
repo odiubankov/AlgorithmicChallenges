@@ -54,7 +54,7 @@ public:
             return false;
 
         _valuesArray.push_back(val);
-        insertRes.first->second = _valuesArray.size() - 1;
+        insertRes.first->second = static_cast<unsigned long>(_valuesArray.size() - 1);
         return true;
     }
 

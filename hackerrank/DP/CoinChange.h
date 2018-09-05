@@ -21,7 +21,7 @@ long long getWaysImpl(
         return cacheIt->second;
 
     long long ways = 0;
-    for (int i = 0;; i += *coinIt) {
+    for (int i = 0;; i += static_cast<int>(*coinIt)) {
         auto remainder = n - i;
         if (remainder > 0)
             ways += getWaysImpl(remainder, coinIt + 1, coinItEnd, cache);
