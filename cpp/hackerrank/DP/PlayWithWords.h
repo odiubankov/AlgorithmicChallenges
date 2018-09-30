@@ -1,12 +1,12 @@
 #pragma once
 
 #include <string>
-#include <unordered_map>
+#include <vector>
 
 using namespace std;
 
 using ResultT = unsigned long long;
-using ResultCacheT = unordered_map<ResultT, unordered_map<ResultT, ResultT>>;
+using ResultCacheT = vector<vector<ResultT>>;
 
 namespace hackerrank {
 
@@ -15,20 +15,15 @@ ResultT getMaxPalindromLengthToLeft(
         const string& s,
         ResultT middle,
         ResultT length,
-        ResultCacheT& resultCache,
-        ResultCacheT& rightCache) {
+        ResultCacheT& resultCache) {
     if (length == 0)
         return 0;
 
     if (length == 1)
         return  1;
 
-    auto middleCacheIt = resultCache.find(middle);
-    if (middleCacheIt != end(resultCache)) {
-        auto resultIt = middleCacheIt->second.find(length);
-        if (resultIt != end(middleCacheIt->second))
-            return resultIt->second;
-    }
+    if (resultCache[middle][length] != 0)
+        return resultCache[middle][length];
 
     ResultT palindromAtThisPoint = 1;
     auto endIt = begin(s) + middle - 1;
@@ -36,7 +31,7 @@ ResultT getMaxPalindromLengthToLeft(
     auto charIt = find(beginIt, endIt, *endIt);
     if (charIt != endIt) {
         palindromAtThisPoint += 1;
-        palindromAtThisPoint += getMaxPalindromLengthToLeft(s, middle - 1, endIt - charIt - 1, resultCache, rightCache);
+        palindromAtThisPoint += getMaxPalindromLengthToLeft(s, middle - 1, endIt - charIt - 1, resultCache);
     }
 
     ResultT result = 0;
@@ -44,12 +39,11 @@ ResultT getMaxPalindromLengthToLeft(
         result = palindromAtThisPoint;
     }
     else {
-        auto palindromAtNextPoint = getMaxPalindromLengthToLeft(s, middle - 1, length - 1, resultCache, rightCache);
+        auto palindromAtNextPoint = getMaxPalindromLengthToLeft(s, middle - 1, length - 1, resultCache);
         result = max(palindromAtThisPoint, palindromAtNextPoint);
     }
 
     resultCache[middle][length] = result;
-    rightCache[middle - length][length] = result;
     return result;
 }
 
@@ -58,20 +52,15 @@ ResultT getMaxPalindromLengthToRight(
     const string& s,
     ResultT middle,
     ResultT length,
-    ResultCacheT& resultCache,
-    ResultCacheT& leftCache) {
+    ResultCacheT& resultCache) {
     if (length == 0)
         return 0;
 
     if (length == 1)
         return 1;
 
-    auto middleCacheIt = resultCache.find(middle);
-    if (middleCacheIt != end(resultCache)) {
-        auto resultIt = middleCacheIt->second.find(length);
-        if (resultIt != end(middleCacheIt->second))
-            return resultIt->second;
-    }
+    if (resultCache[middle][length] != 0)
+        return resultCache[middle][length];
 
     ResultT palindromAtThisPoint = 1;
     auto endIt = rend(s) - middle - 1;
@@ -79,7 +68,7 @@ ResultT getMaxPalindromLengthToRight(
     auto charIt = find(beginIt, endIt, *endIt);
     if (charIt != endIt) {
         palindromAtThisPoint += 1;
-        palindromAtThisPoint += getMaxPalindromLengthToRight(s, middle + 1, endIt - charIt - 1, resultCache, leftCache);
+        palindromAtThisPoint += getMaxPalindromLengthToRight(s, middle + 1, endIt - charIt - 1, resultCache);
     }
 
     ResultT result = 0;
@@ -87,22 +76,22 @@ ResultT getMaxPalindromLengthToRight(
         result = palindromAtThisPoint;
     }
     else {
-        auto palindromAtNextPoint = getMaxPalindromLengthToRight(s, middle + 1, length - 1, resultCache, leftCache);
+        auto palindromAtNextPoint = getMaxPalindromLengthToRight(s, middle + 1, length - 1, resultCache);
         result = std::max(palindromAtThisPoint, palindromAtNextPoint);
     }
 
     resultCache[middle][length] = result;
-    leftCache[middle + length][length] = result;
     return result;
 }
 
 
 ResultT playWithWords(const string& s) {
-    ResultCacheT leftCache, rightCache;
+    ResultCacheT leftCache(s.size(), ResultCacheT::value_type(s.size(), 0));
+    auto rightCache = leftCache;
     ResultT maxPalindromsProduct = 0;
     for (ResultT middle = 1; middle <= s.size() - 1; ++middle) {
-        auto palLengthLeft = getMaxPalindromLengthToLeft(s, middle, middle, leftCache, rightCache);
-        auto palLengthRight = getMaxPalindromLengthToRight(s, middle, s.size() - middle, rightCache, leftCache);
+        auto palLengthLeft = getMaxPalindromLengthToLeft(s, middle, middle, leftCache);
+        auto palLengthRight = getMaxPalindromLengthToRight(s, middle, s.size() - middle, rightCache);
         auto palindromsProduct = palLengthLeft * palLengthRight;
         if (palindromsProduct > maxPalindromsProduct)
             maxPalindromsProduct = palindromsProduct;
