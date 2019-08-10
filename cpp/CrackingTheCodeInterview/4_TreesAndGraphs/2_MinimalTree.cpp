@@ -4,11 +4,10 @@ namespace {
 
 using RangeIt = std::vector<int>::const_iterator;
 
-std::shared_ptr<BstNode> buildFromSortedRange(const RangeIt& rangeBegin, const RangeIt& rangeEnd, std::size_t size){
+BstNodePtr buildFromSortedRange(const RangeIt& rangeBegin, const RangeIt& rangeEnd, std::size_t size){
     if (size <= 0)
-        return std::shared_ptr<BstNode>{};
+        return BstNodePtr{};
     auto node = std::make_shared<BstNode>();
-    //odd
     auto half = size / 2;
     auto middle = rangeBegin + half;
     node->val_ = *middle;

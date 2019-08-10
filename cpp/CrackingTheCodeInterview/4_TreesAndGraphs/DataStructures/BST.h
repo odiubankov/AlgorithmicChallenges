@@ -3,16 +3,24 @@
 
 #include <memory>
 
+class BstNode;
+using BstNodePtr = std::shared_ptr<BstNode>;
+
 class BstNode{
 public:
-    std::shared_ptr<BstNode> left_;
-    std::shared_ptr<BstNode> right_;
+    BstNode(int val)
+        : val_{val}
+    {}
+    BstNode() = default;
+
+    BstNodePtr left_;
+    BstNodePtr right_;
     int val_{0};
 };
 
 class Bst{
 public:
-    std::shared_ptr<BstNode> head_;
+    BstNodePtr head_;
 };
 
 #endif //ALGORITHMICCHALLENGES_BST_H
