@@ -17,6 +17,8 @@ file(GLOB_RECURSE SOURCE_FILES
         hackerrank/*.h /
         leetcode/*.cpp /
         leetcode/*.h /
+        CrackingTheCodeInterview/*.cpp /
+        CrackingTheCodeInterview/*.h /
         sedgewick/*.cpp /
         sedgewick/*.h)
 
