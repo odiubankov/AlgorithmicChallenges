@@ -6,17 +6,15 @@ TEST(CheckBalanced, unbalanced)
 //    10
 //    /\
 //   8  22
-//  /   /\
-// 3   11 30
+//      /\
+//     11 30
 //        /
 //       25
     auto node25 = std::make_shared<BstNode>(25);
-    auto node3 = std::make_shared<BstNode>(3);
     auto node11 = std::make_shared<BstNode>(11);
     auto node30 = std::make_shared<BstNode>(30);
     node30->left_ = node25;
     auto node8 = std::make_shared<BstNode>(8);
-    node8->left_ = node3;
     auto node22 = std::make_shared<BstNode>(22);
     node22->left_ = node11;
     node22->right_ = node30;

@@ -1,15 +1,16 @@
 #include "3_ListOfDepth.h"
 #include <gtest/gtest.h>
 
-TEST(ListOfDepth, test)
-{
-//    10
-//    /\
-//   8  22
-//  /   /\
-// 3   11 30
-//        /
-//       25
+namespace{
+
+Bst createBst(){
+    //    10
+    //    /\
+    //   8  22
+    //  /   /\
+    // 3   11 30
+    //        /
+    //       25
     auto node25 = std::make_shared<BstNode>(25);
     auto node3 = std::make_shared<BstNode>(3);
     auto node11 = std::make_shared<BstNode>(11);
@@ -25,10 +26,27 @@ TEST(ListOfDepth, test)
     node10->right_ = node22;
     Bst bst;
     bst.head_ = node10;
-    auto lod = getListOfDepth(bst);
+    return bst;
+}
+
+}
+
+TEST(ListOfDepthRecursion, test)
+{
+    auto lod = getListOfDepthRecursion(createBst());
     ASSERT_EQ(4, lod.size());
-    ASSERT_EQ((std::list<int>{10}), lod[0]);
-    ASSERT_EQ((std::list<int>{8, 22}), lod[1]);
-    ASSERT_EQ((std::list<int>{3, 11, 30}), lod[2]);
-    ASSERT_EQ((std::list<int>{25}), lod[3]);
+    ASSERT_EQ((std::vector<int>{10}), lod[0]);
+    ASSERT_EQ((std::vector<int>{8, 22}), lod[1]);
+    ASSERT_EQ((std::vector<int>{3, 11, 30}), lod[2]);
+    ASSERT_EQ((std::vector<int>{25}), lod[3]);
+}
+
+TEST(ListOfDepthIterative, test)
+{
+    auto lod = getListOfDepthIterative(createBst());
+    ASSERT_EQ(4, lod.size());
+    ASSERT_EQ((std::vector<int>{10}), lod[0]);
+    ASSERT_EQ((std::vector<int>{8, 22}), lod[1]);
+    ASSERT_EQ((std::vector<int>{3, 11, 30}), lod[2]);
+    ASSERT_EQ((std::vector<int>{25}), lod[3]);
 }
