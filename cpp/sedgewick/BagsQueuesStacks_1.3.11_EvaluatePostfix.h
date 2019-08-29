@@ -3,6 +3,7 @@
 
 #include <string>
 #include <stack>
+#include <cassert>
 
 namespace sedgewick
 {

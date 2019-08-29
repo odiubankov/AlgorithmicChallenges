@@ -2,6 +2,7 @@
 #define ALGORITHMICCHALLENGES_ARRAY2D_H
 
 #include <array>
+#include <limits>
 
 namespace hackerrank
 {

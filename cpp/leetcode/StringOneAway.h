@@ -21,6 +21,7 @@
 #include <array>
 #include <unordered_set>
 #include <cmath>
+#include <limits>
 
 namespace strpermutation
 {

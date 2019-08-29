@@ -2,6 +2,7 @@
 #define ALGORITHMICCHALLENGES_DIRECTEDGRAPH_H
 
 #include <vector>
+#include <memory>
 
 class Node;
 using NodePtrT = std::shared_ptr<Node>;

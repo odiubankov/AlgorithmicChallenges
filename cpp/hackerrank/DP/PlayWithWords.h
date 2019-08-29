@@ -2,17 +2,16 @@
 
 #include <string>
 #include <vector>
-
-using namespace std;
+#include <algorithm>
 
 using ResultT = unsigned long long;
-using ResultCacheT = vector<vector<ResultT>>;
+using ResultCacheT = std::vector<std::vector<ResultT>>;
 
 namespace hackerrank {
 
 
 ResultT getMaxPalindromLengthToLeft(
-        const string& s,
+        const std::string& s,
         ResultT middle,
         ResultT length,
         ResultCacheT& resultCache) {
@@ -40,7 +39,7 @@ ResultT getMaxPalindromLengthToLeft(
     }
     else {
         auto palindromAtNextPoint = getMaxPalindromLengthToLeft(s, middle - 1, length - 1, resultCache);
-        result = max(palindromAtThisPoint, palindromAtNextPoint);
+        result = std::max(palindromAtThisPoint, palindromAtNextPoint);
     }
 
     resultCache[middle][length] = result;
@@ -49,7 +48,7 @@ ResultT getMaxPalindromLengthToLeft(
 
 
 ResultT getMaxPalindromLengthToRight(
-    const string& s,
+    const std::string& s,
     ResultT middle,
     ResultT length,
     ResultCacheT& resultCache) {
@@ -85,7 +84,7 @@ ResultT getMaxPalindromLengthToRight(
 }
 
 
-ResultT playWithWords(const string& s) {
+ResultT playWithWords(const std::string& s) {
     ResultCacheT leftCache(s.size(), ResultCacheT::value_type(s.size(), 0));
     auto rightCache = leftCache;
     ResultT maxPalindromsProduct = 0;
