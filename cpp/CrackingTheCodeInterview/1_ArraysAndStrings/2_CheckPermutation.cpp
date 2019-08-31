@@ -1,21 +1,18 @@
 #include "2_CheckPermutation.h"
+#include "Utils/StringUtils.h"
 
 #include <array>
-#include <limits>
 
-int getCharacterIndex(char character) {
-    return character - std::numeric_limits<char>::min();
-}
 
 bool checkPermutation(const std::string& a, const std::string& b) {
     if (a.size() != b.size())
         return false;
 
-    std::array<int, std::numeric_limits<char>::max() - std::numeric_limits<char>::min()> charactersCnt{};
+    std::array<int, strutils::getCharactersCnt<char>()> charactersCnt{};
     for (auto character : a)
-        ++charactersCnt[getCharacterIndex(character)];
+        ++charactersCnt[strutils::getCharacterIndex(character)];
     for (auto character : b) {
-        if (--charactersCnt[getCharacterIndex(character)] < 0)
+        if (--charactersCnt[strutils::getCharacterIndex(character)] < 0)
             return false;
     }
 
