@@ -1,0 +1,8 @@
+#ifndef ALGORITHMICCHALLENGES_6_STRINGCOMPRESSION_H
+#define ALGORITHMICCHALLENGES_6_STRINGCOMPRESSION_H
+
+#include <string>
+
+std::string compressString(const std::string& str);
+
+#endif //ALGORITHMICCHALLENGES_6_STRINGCOMPRESSION_H
