@@ -1,28 +1,8 @@
 #include "4_Partition.h"
 #include <gtest/gtest.h>
 
-namespace {
-
-ListNode* addNode(ListNode* tail, int val) {
-    auto newNode = new ListNode(val);
-    if (tail) {
-        tail->next = newNode;
-        return tail->next;
-    } else {
-        return newNode;
-    }
-}
-
-}
-
 TEST(Partition, test) {
-    ListNode *head = nullptr, *tail = nullptr;
-    head = tail = new ListNode(1);
-    tail = addNode(tail, 4);
-    tail = addNode(tail, 3);
-    tail = addNode(tail, 2);
-    tail = addNode(tail, 5);
-    addNode(tail, 2);
+    auto head = createList({1, 4, 3, 2, 5, 2});
 
     head = partition(head, 3);
 

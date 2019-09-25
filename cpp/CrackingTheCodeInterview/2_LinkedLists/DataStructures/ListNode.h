@@ -13,6 +13,6 @@ struct ListNode {
 };
 
 int getLength(ListNode* head);
-ListNode* createList(const std::vector<int>& vals);
+ListNode* createList(const std::vector<int>& vals, ListNode** tail = nullptr);
 
 #endif //ALGORITHMICCHALLENGES_LISTNODE_H

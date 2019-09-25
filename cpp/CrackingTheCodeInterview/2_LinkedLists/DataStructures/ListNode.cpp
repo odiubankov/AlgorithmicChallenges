@@ -11,7 +11,7 @@ int getLength(ListNode* head) {
 }
 
 
-ListNode* createList(const std::vector<int>& vals) {
+ListNode* createList(const std::vector<int>& vals, ListNode** tail/* = nullptr*/) {
     if (vals.empty())
         return nullptr;
 
@@ -23,6 +23,9 @@ ListNode* createList(const std::vector<int>& vals) {
         current->next = new ListNode(*it);
         current = current->next;
     }
+
+    if (tail)
+        *tail = current;
 
     return head;
 }
