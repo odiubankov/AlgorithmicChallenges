@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.6)
 project(algorithmicchallenges)
 
-set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD 17)
 set(BUILD_SHARED_LIBS OFF)
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")

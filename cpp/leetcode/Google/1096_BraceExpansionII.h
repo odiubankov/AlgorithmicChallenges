@@ -9,65 +9,74 @@
 #include <set>
 using namespace std;
 
-using ResT = vector<string>;
-
-ResT multiply(const ResT& first, const ResT& second) {
-    ResT res;
-    res.reserve(first.size() * second.size());
-    for (const auto& f : first) {
-        for (const auto& s : second) {
-            res.push_back(f + s);
-        }
+vector<string> multiply(const vector<vector<string>>::const_iterator& it, const vector<vector<string>>::const_iterator& itE) {
+    if (it == itE)
+        return { "" };
+    vector<string> res;
+    for (const auto& str1 : *it) {
+        for (const auto& str2 : multiply(it + 1, itE))
+            res.push_back(str1 + str2);
     }
     return res;
 }
 
-size_t eval(ResT& res, const string& str, size_t pos) {
-    string current;
-    for (size_t i = pos; i < str.length(); ++i) {
-        char c = str[i];
-        if (c >= 'a' && c <= 'z')
-            current += c;
-        else {
-            if (!current.empty()) {
-                if (!res.empty() && str[i - current.length() - 1] == '}') {
-                    res = multiply(res, {current});
-                } else {
-                    res.push_back(move(current));
+void uniqueSort(vector<string>& strs) {
+    set<string> sorted;
+    for (const auto& str : strs)
+        sorted.insert(str);
+    strs.clear();
+    copy(begin(sorted), end(sorted), back_inserter(strs));
+}
+
+vector<string> braceExpansionII(const string& expression) {
+    vector<string> subExprs;
+    int openCnt = 0;
+    int start = 0;
+    for (int i = 0; i < expression.length(); ++i) {
+        if (expression[i] == '{') {
+            ++openCnt;
+        } else if (expression[i] == '}') {
+            --openCnt;
+        } else if (expression[i] == ',' && openCnt == 0) {
+            subExprs.push_back(expression.substr(start, i - start));
+            start = i + 1;
+        }
+    }
+    if (!subExprs.empty()) {
+        subExprs.push_back(expression.substr(start));
+        vector<string> res;
+        for (const auto& subExpr : subExprs) {
+            for (const auto& subRes : braceExpansionII(subExpr))
+                res.push_back(subRes);
+        }
+        uniqueSort(res);
+        return res;
+    }
+    vector<vector<string>> factors;
+    start = 0;
+    openCnt = 0;
+    for (int i = 0; i < expression.length(); ++i) {
+        if (expression[i] == '{') {
+            if (openCnt == 0) {
+                if (i > 0 && i > start) {
+                     factors.push_back(braceExpansionII(expression.substr(start, i - start)));
                 }
-                current.clear();
+                start = i + 1;
             }
-            if (c == '}')
-                return i;
-            if (c == '{') {
-                ResT next;
-                char prev = str[i - 1];
-                i = eval(next, str, i + 1);
-                if (res.empty()) {
-                    res = next;
-                } else if (prev == ',') {
-                    copy(begin(next), end(next), back_inserter(res));
-                } else if (prev == '}') {
-                    res = multiply(res, next);
-                } else {
-                    auto last = res.back();
-                    res.pop_back();
-                    auto toAdd = multiply({last}, next);
-                    copy(begin(toAdd), end(toAdd), back_inserter(res));
-                }
+            ++openCnt;
+        } else if (expression[i] == '}') {
+            if (--openCnt == 0) {
+                factors.push_back(braceExpansionII(expression.substr(start, i - start)));
+                start = i + 1;
             }
         }
     }
-    if (!current.empty())
-        res.push_back(current);
-    return str.size();
-}
-
-ResT braceExpansionII(const string& expression) {
-    ResT res;
-    eval(res, expression, 0);
-    set<string> s(begin(res), end(res));
-    res.assign( s.begin(), s.end() );
+    if (start < expression.size())
+        factors.push_back({expression.substr(start)});
+    if (factors.size() == 1)
+        return factors.front();
+    auto res = multiply(begin(factors), end(factors));
+    uniqueSort(res);
     return res;
 }
 
