@@ -5,6 +5,8 @@
 #include <vector>
 #include <unordered_set>
 #include <queue>
+#include <algorithm>
+#include <cmath>
 using namespace std;
 
 vector<double> getCombinations(const vector<int>& nums) {

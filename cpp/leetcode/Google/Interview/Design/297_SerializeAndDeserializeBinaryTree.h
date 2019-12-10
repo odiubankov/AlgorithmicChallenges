@@ -5,6 +5,7 @@
 #include <string>
 #include <sstream>
 #include <queue>
+#include <algorithm>
 using namespace std;
 
 struct TreeNode {

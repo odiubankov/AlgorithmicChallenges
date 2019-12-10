@@ -3,6 +3,8 @@
 #define ALGORITHMICCHALLENGES_4_MEDIANOFTWOSORTEDARRAYS_H
 
 #include <vector>
+#include <algorithm>
+#include <cassert>
 
 class SolutionMedianOfTwoSortedArrays {
     static void countElements(const std::vector<int>& nums, int median, int& leftCnt, int& rightCnt, int& centerCnt) {

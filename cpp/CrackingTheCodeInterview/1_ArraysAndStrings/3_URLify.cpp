@@ -1,4 +1,5 @@
 #include "3_URLify.h"
+#include <algorithm>
 
 std::string urlify(const std::string& str) {
     auto spaceCnt = std::count(begin(str), end(str), ' ');

@@ -3,6 +3,7 @@
 #define ALGORITHMICCHALLENGES_43_MULTIPLYSTRINGS_H
 #include <string>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 vector<int> toDigits(const string& num) {

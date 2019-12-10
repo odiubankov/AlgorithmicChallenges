@@ -5,6 +5,7 @@
 #include <vector>
 #include <array>
 #include <tuple>
+#include <algorithm>
 using namespace std;
 
 int getDistance(const vector<int>& worker, const vector<int>& bike) {

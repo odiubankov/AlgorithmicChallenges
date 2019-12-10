@@ -6,6 +6,7 @@
 #include <vector>
 #include <queue>
 #include <unordered_map>
+#include <algorithm>
 
 class SolutionLowestCommonAncestor {
     std::vector<TreeNode*> getPathIter(TreeNode* root, TreeNode* node) {

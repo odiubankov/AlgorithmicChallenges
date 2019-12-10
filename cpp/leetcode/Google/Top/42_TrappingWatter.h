@@ -5,6 +5,7 @@
 #include <vector>
 #include <limits>
 #include <numeric>
+#include <algorithm>
 
 int calcCurrentTrap(std::vector<int>& trapVals) {
     int res = 0;

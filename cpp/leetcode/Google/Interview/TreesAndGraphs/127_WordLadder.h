@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <vector>
 #include <queue>
+#include <algorithm>
 using namespace std;
 
 using WordsT = vector<string>;

@@ -8,6 +8,7 @@
 #include <array>
 #include <unordered_set>
 #include <list>
+#include <algorithm>
 using namespace std;
 
 constexpr size_t getAlphabetSize() { return 'z' - 'a' + 1; }

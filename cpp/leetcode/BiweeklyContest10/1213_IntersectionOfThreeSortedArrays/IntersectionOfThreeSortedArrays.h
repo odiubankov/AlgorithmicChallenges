@@ -4,6 +4,7 @@
 #define ALGORITHMICCHALLENGES_INTERSECTIONOFTHREESORTEDARRAYS_H
 
 #include <vector>
+#include <algorithm>
 
 class SolutionItersectionOfThreeSortedArrays {
 public:

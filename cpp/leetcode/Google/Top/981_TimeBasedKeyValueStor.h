@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
-
+#include <algorithm>
 
 class TimeMap {
     std::unordered_map<std::string, std::vector<std::pair<int, std::string>>> vals;

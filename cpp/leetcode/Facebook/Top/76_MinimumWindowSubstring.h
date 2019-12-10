@@ -4,6 +4,7 @@
 
 #include <string>
 #include <unordered_map>
+#include <algorithm>
 using namespace std;
 
 string minWindow(const string& str1, const string& str2) {

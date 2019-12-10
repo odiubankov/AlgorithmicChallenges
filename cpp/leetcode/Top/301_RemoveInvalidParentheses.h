@@ -5,6 +5,7 @@
 #include <string>
 #include <unordered_set>
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 string removeChars(const string& s, unordered_set<int> toRemove) {

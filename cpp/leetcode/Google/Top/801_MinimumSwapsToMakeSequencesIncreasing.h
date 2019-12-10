@@ -3,6 +3,7 @@
 #define ALGORITHMICCHALLENGES_801_MINIMUMSWAPSTOMAKESEQUENCESINCREASING_H
 
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 vector<bool> getSwaps(const vector<int>& A, const vector<int>& B, size_t j) {

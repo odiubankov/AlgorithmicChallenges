@@ -3,6 +3,7 @@
 #define ALGORITHMICCHALLENGES_57_INSERTINTERVAL_H
 
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInterval) {

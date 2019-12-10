@@ -5,6 +5,7 @@
 #include <vector>
 #include <array>
 #include <unordered_map>
+#include <algorithm>
 using namespace std;
 
 using CacheT = unordered_map<int, unordered_map<vector<bool>, int>>;

@@ -2,6 +2,7 @@
 #include <gtest/gtest.h>
 #include <random>
 #include <unordered_set>
+#include <chrono>
 
 TEST(RandomNode, test) {
     BstRandom bst;

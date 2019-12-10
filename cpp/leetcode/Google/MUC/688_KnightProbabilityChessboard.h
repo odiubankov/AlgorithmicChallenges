@@ -4,6 +4,7 @@
 #include <array>
 #include <vector>
 #include <unordered_map>
+#include <algorithm>
 
 struct Pos {
     int row;

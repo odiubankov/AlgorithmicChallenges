@@ -6,6 +6,7 @@
 #include <string>
 #include <memory>
 #include <array>
+#include <algorithm>
 using namespace std;
 
 constexpr size_t getCharsCnt() { return 'z' - 'a' + 2; }

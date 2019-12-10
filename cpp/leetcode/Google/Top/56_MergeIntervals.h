@@ -4,6 +4,8 @@
 
 #include <vector>
 #include <map>
+#include <cassert>
+#include <algorithm>
 
 std::vector<std::vector<int>> merge(const std::vector<std::vector<int>>& intervals) {
     std::map<int, int> begins, ends;
