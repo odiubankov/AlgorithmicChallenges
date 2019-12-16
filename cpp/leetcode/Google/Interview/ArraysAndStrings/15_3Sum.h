@@ -23,9 +23,8 @@ vector<vector<int>> threeSum(vector<int>& nums) {
         int target = -*it;
         for (auto left = it + 1; left != end(nums);) {
             int twoSum = target - *left;
-            auto rightIt = lower_bound(left + 1, end(nums), twoSum);
-            if (rightIt != end(nums) && *rightIt == twoSum)
-                triplets.emplace_back(vector<int>{*it, *left, *rightIt});
+            if (binary_search(left + 1, end(nums), twoSum))
+                triplets.emplace_back(vector<int>{*it, *left, twoSum});
             moveToNextVal(left, end(nums));
         }
         moveToNextVal(it, end(nums));
