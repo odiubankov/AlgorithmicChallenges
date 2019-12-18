@@ -3,6 +3,7 @@
 #define ALGORITHMICCHALLENGES_23_MERGEKSORTEDLISTS_H
 
 #include <vector>
+#include <queue>
 using namespace std;
 
 class SolutionMergeSorted {
@@ -39,6 +40,43 @@ public:
             tail->next = lists.front();
             tail = tail->next;
             updateHeap(lists, nodeComp);
+        }
+        tail->next = nullptr;
+        return head;
+    }
+
+    struct ListNodeComp {
+        bool operator()(ListNode* l, ListNode* r) {
+            return l->val > r->val;
+        }
+    };
+
+    using PriorityQueueT = priority_queue<ListNode*, vector<ListNode*>, ListNodeComp>;
+
+    void updateQueue(PriorityQueueT& queue) {
+        auto top = queue.top();
+        queue.pop();
+        if (top->next)
+            queue.push(top->next);
+    }
+
+    ListNode* mergeKListsPriorityQueue(vector<ListNode*>& lists) {
+        lists.erase(remove(begin(lists), end(lists), nullptr), end(lists));
+        if (lists.empty())
+            return nullptr;
+        auto nodeComp = [](auto l, auto r) {
+            return l->val > r->val;
+        };
+        PriorityQueueT sortedLists;
+        for (auto l : lists)
+            sortedLists.push(l);
+        auto head = sortedLists.top();
+        auto tail = head;
+        updateQueue(sortedLists);
+        while (!sortedLists.empty()) {
+            tail->next = sortedLists.top();
+            tail = tail->next;
+            updateQueue(sortedLists);
         }
         tail->next = nullptr;
         return head;
