@@ -62,23 +62,24 @@ int trapSimple(const std::vector<int>& height) {
     if (height.size() < 3)
         return 0;
     int water = 0;
-    int left = 0, right = height.size() - 1;
+    auto leftIt = begin(height);
+    auto rightIt = end(height) - 1;
     int maxLeft = 0, maxRight = 0;
-    while (left != right) {
-        if (height[left] < height[right]) {
-            if (height[left] < maxLeft) {
-                water += (maxLeft - height[left]);
-            } else if (height[left] > maxLeft) {
-                maxLeft = height[left];
+    while (leftIt != rightIt) {
+        if (*leftIt < *rightIt) {
+            if (*leftIt < maxLeft) {
+                water += (maxLeft - *leftIt);
+            } else if (*leftIt > maxLeft) {
+                maxLeft = *leftIt;
             }
-            ++left;
-        } else { // height[left] >= height[right]
-            if (height[right] < maxRight) {
-                water += (maxRight - height[right]);
-            } else if (height[right] > maxRight) {
-                maxRight = height[right];
+            ++leftIt;
+        } else { // *leftIt >= *rightIt
+            if (*rightIt < maxRight) {
+                water += (maxRight - *rightIt);
+            } else if (*rightIt > maxRight) {
+                maxRight = *rightIt;
             }
-            --right;
+            --rightIt;
         }
     }
 
