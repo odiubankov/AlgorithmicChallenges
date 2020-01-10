@@ -17,94 +17,61 @@ struct TreeNode {
 
 class Codec {
 public:
+    static const string NULLNODE;
+    static const char DELIMETER;
     // Encodes a tree to a single string.
     string serialize(TreeNode* root) {
-        stringstream ss;
-        ss << "[";
-        vector<vector<TreeNode*>> nodeLevels;
-        nodeLevels.push_back({root});
-        while (any_of(begin(nodeLevels.back()), end(nodeLevels.back()),
-            [](auto node) { return node != nullptr;})) {
-            vector<TreeNode*> nextLevel;
-            for (auto node : nodeLevels.back()) {
-                if (node) {
-                    nextLevel.push_back(node->left);
-                    nextLevel.push_back(node->right);
-                }
+        stringstream ss, nullStream;
+        queue<TreeNode*> nodesDFS;
+        nodesDFS.push(root);
+        do {
+            auto node = nodesDFS.front();
+            nodesDFS.pop();
+            if (node) {
+                ss << nullStream.str();
+                nullStream.str("");
+                nullStream.clear();
+                if (ss.tellp() != 0)
+                    ss << DELIMETER;
+                ss << node->val;
+                nodesDFS.push(node->left);
+                nodesDFS.push(node->right);
+            } else {
+                nullStream << DELIMETER << NULLNODE;
             }
-            nodeLevels.push_back(move(nextLevel));
-        }
-        nodeLevels.pop_back();
-        while (!nodeLevels.empty() && !nodeLevels.back().back())
-            nodeLevels.back().pop_back();
-        if (!nodeLevels.empty()) {
-            auto levelIt = begin(nodeLevels);
-            ss << levelIt->front()->val;
-            ++levelIt;
-            for (;levelIt != end(nodeLevels); ++levelIt) {
-                for (auto node : *levelIt) {
-                    ss << ",";
-                    if (node)
-                        ss << node->val;
-                    else
-                        ss << "null";
-                }
-            }
-        }
-        ss << "]";
+        } while (!nodesDFS.empty());
         return ss.str();
-    }
-
-    static vector<string> split(const string& s, char delimiter) {
-        vector<string> tokens;
-        string token;
-        istringstream tokenStream(s);
-        while (getline(tokenStream, token, delimiter))
-            tokens.push_back(token);
-        return tokens;
-    }
-
-    static TreeNode* createNode(const string& str){
-        if (str[0] == 'n')
-            return nullptr;
-        return new TreeNode(stoi(str));
     }
 
     // Decodes your encoded data to tree.
     TreeNode* deserialize(const string& data) {
-        if (data.length() == 2)
+        if (data.empty())
             return nullptr;
-        string nodesStr = data.substr(1, data.length() - 2);
-        auto nodeStrs = split(nodesStr, ',');
-        auto nodeStrIt = begin(nodeStrs);
-        auto head = new TreeNode(stoi(*nodeStrIt));
-        if (++nodeStrIt == end(nodeStrs))
-            return head;
-        vector<TreeNode*> currentLevel{head};
-        auto nodeIt = begin(currentLevel);
-        vector<TreeNode*> nextLevel;
-        for (;;) {
-            //left
-            if (((*nodeIt)->left = createNode(*nodeStrIt)))
-                nextLevel.push_back((*nodeIt)->left);
-            if (++nodeStrIt == end(nodeStrs))
-                break;
-
-            //right
-            if (((*nodeIt)->right = createNode(*nodeStrIt)))
-                nextLevel.push_back((*nodeIt)->right);
-            if (++nodeStrIt == end(nodeStrs))
-                break;
-
-            //next
-            if (++nodeIt == end(currentLevel)) {
-                currentLevel = move(nextLevel);
-                nextLevel.clear();
-                nodeIt = begin(currentLevel);
+        string nodeStr;
+        istringstream tokenStream(data);
+        getline(tokenStream, nodeStr, DELIMETER);
+        auto head = new TreeNode(stoi(nodeStr));
+        queue<TreeNode*> nodes;
+        nodes.push(head);
+        while (getline(tokenStream, nodeStr, DELIMETER)) {
+            if (nodeStr != NULLNODE) {
+                nodes.front()->left = new TreeNode(stoi(nodeStr));
+                nodes.push(nodes.front()->left);
             }
+
+            if (getline(tokenStream, nodeStr, DELIMETER)) {
+                if (nodeStr != NULLNODE) {
+                    nodes.front()->right = new TreeNode(stoi(nodeStr));
+                    nodes.push(nodes.front()->right);
+                }
+            }
+            nodes.pop();
         }
         return head;
     }
 };
+
+string const Codec::NULLNODE = "null";
+char const Codec::DELIMETER = ',';
 
 #endif //ALGORITHMICCHALLENGES_297_SERIALIZEANDDESERIALIZEBINARYTREE_H
