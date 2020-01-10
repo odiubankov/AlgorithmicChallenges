@@ -6,6 +6,7 @@
 #include <map>
 #include <set>
 #include <limits>
+#include <queue>
 using namespace std;
 
 void updateSkyline(vector<vector<int>>& skyline, const multiset<int>& h, int x) {
@@ -18,44 +19,66 @@ void updateSkyline(vector<vector<int>>& skyline, const multiset<int>& h, int x) 
     }
 }
 
+struct BuildingEnd {
+    int x_ = 0;
+    int height_ = 0;
+    BuildingEnd(int x, int height) : x_{x}, height_{height} {}
+};
+
+struct BuildingEndComp {
+    bool operator()(const BuildingEnd& l, const BuildingEnd& r) {
+        return l.x_ > r.x_;
+    }
+};
+
+using BuidingEndsT = priority_queue<BuildingEnd, vector<BuildingEnd>, BuildingEndComp>;
+BuidingEndsT getBuildingEnds(const vector<vector<int>>& buildings) {
+    BuidingEndsT bEnds;
+    for (const auto& building : buildings)
+        bEnds.emplace(building[1], building[2]);
+    return bEnds;
+}
+
 vector<vector<int>> getSkyline(const vector<vector<int>>& buildings) {
     if (buildings.empty())
         return {};
-    auto bIt = begin(buildings), bItE = end(buildings);
-    int x = (*bIt)[0];
-    multimap<int, int> bEnds;
+    auto bEnds = getBuildingEnds(buildings);
+    multiset<int> heigthes;
+    int skylineX = buildings.front().front();
     vector<vector<int>> skyline;
-    multiset<int> h;
-    while (bIt != bItE || !bEnds.empty()) {
-        if (bIt != bItE) {
-            const auto& b = *bIt;
-            if (b[0] == x) {
-                h.insert(b[2]);
-                bEnds.emplace(b[1], b[2]);
+    for (auto bIt = begin(buildings); bIt != end(buildings) || !bEnds.empty();) {
+        if (bIt != end(buildings)) {
+            const auto& building = *bIt;
+            if (building.front() == skylineX) {
+                heigthes.insert(building.back());
                 ++bIt;
                 continue;
             }
         }
+
         if (!bEnds.empty()) {
-            auto nextEnd = begin(bEnds);
-            if (nextEnd->first == x) {
-                h.erase(h.find(nextEnd->second));
-                bEnds.erase(nextEnd);
+            auto nextEnd = bEnds.top();
+            if (bEnds.top().x_ == skylineX) {
+                heigthes.erase(heigthes.find(bEnds.top().height_));
+                bEnds.pop();
                 continue;
             }
         }
-        updateSkyline(skyline, h, x);
+
+        updateSkyline(skyline, heigthes, skylineX);
         if (bEnds.empty()) {
-            if (bIt != bItE)
-                x = (*bIt)[0];
+            if (bIt != end(buildings))
+                skylineX = bIt->front();
         } else {
-            auto nextEnd = begin(bEnds);
-            x = bIt == bItE ? nextEnd->first : min((*bIt)[0], nextEnd->first);
+            if (bIt == end(buildings))
+                skylineX = bEnds.top().x_;
+            else
+                skylineX = min(bIt->front(), bEnds.top().x_);
         }
     }
-    updateSkyline(skyline, h, x);
+
+    updateSkyline(skyline, heigthes, skylineX);
     return skyline;
 }
-
 
 #endif //ALGORITHMICCHALLENGES_218_THESKYLINEPROBLEM_H
