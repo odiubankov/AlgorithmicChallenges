@@ -26,56 +26,60 @@ vector<string> getAllPostfixes(const Trie *trie) {
     vector<string> res;
     for (auto child : trie->liveChildren_) {
         char c = getChar(child);
-        for (const auto &childPostfix : getAllPostfixes(trie->children_[child].get())) {
-            res.push_back(c + childPostfix);
+        for (const auto& postfixStr : getAllPostfixes(trie->children_[child].get())) {
+            res.push_back(c + postfixStr);
         }
     }
     return res;
 }
 
-vector<vector<string>> wordSquaresImpl(const vector<string> &startsWith, const Trie &trie) {
-    if (!startsWith.empty() && startsWith.size() == startsWith.front().size())
-        return {startsWith};
-    const Trie *prefix = &trie;
+vector<vector<string>> getWordSquares(const vector<string>& words, const Trie &trie) {
+    if (!words.empty() && words.size() == words.front().size())
+        return {words};
+    const Trie* triePrefix = &trie;
     string prefixStr;
-    for (size_t i = 0; i < startsWith.size(); ++i) {
-        auto nextChar = startsWith[i][startsWith.size()];
+    for (size_t i = 0; i < words.size(); ++i) {
+        auto nextChar = words[i][words.size()];
         auto index = getCharIndex(nextChar);
-        if (!prefix->children_[index]) {
-            prefix = nullptr;
+        if (!triePrefix->children_[index]) {
+            triePrefix = nullptr;
             break;
         }
         else {
             prefixStr += nextChar;
-            prefix = prefix->children_[index].get();
+            triePrefix = triePrefix->children_[index].get();
         }
     }
     vector<vector<string>> res;
-    if (prefix) {
-        for (const auto &postfix : getAllPostfixes(prefix)) {
-            auto start = startsWith;
-            start.push_back(prefixStr + postfix);
-            auto wordRes = wordSquaresImpl(start, trie);
+    if (triePrefix) {
+        for (const auto &postfixStr : getAllPostfixes(triePrefix)) {
+            auto nextWords = words;
+            nextWords.push_back(prefixStr + postfixStr);
+            auto wordRes = getWordSquares(nextWords, trie);
             copy(begin(wordRes), end(wordRes), back_inserter(res));
         }
     }
     return res;
 }
 
-vector<vector<string>> wordSquares(const vector<string> &words) {
-    Trie trie;
+void fillTrie(const vector<string> &words, Trie& trie) {
     for (const auto& word : words) {
-        Trie *current = &trie;
+        auto triePrefix = &trie;
         for (auto c : word) {
             size_t cI = getCharIndex(c);
-            if (!current->children_[cI]) {
-                current->children_[cI] = make_shared<Trie>();
-                current->liveChildren_.insert(cI);
+            if (!triePrefix->children_[cI]) {
+                triePrefix->children_[cI] = make_shared<Trie>();
+                triePrefix->liveChildren_.insert(cI);
             }
-            current = current->children_[cI].get();
+            triePrefix = triePrefix->children_[cI].get();
         }
     }
-    return wordSquaresImpl({}, trie);
+}
+
+vector<vector<string>> wordSquares(const vector<string> &words) {
+    Trie trie;
+    fillTrie(words, trie);
+    return getWordSquares({}, trie);
 }
 }
 
