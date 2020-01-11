@@ -1,6 +1,7 @@
 #include "7_Intersection.h"
 #include "DataStructures/ListNode.h"
 #include <tuple>
+#include <unordered_set>
 
 std::tuple<ListNode*, int> getLastAndLength(ListNode* head) {
     auto result = std::make_tuple<ListNode*, int>(nullptr, 0);
@@ -39,4 +40,23 @@ ListNode* getIntersectionNode(ListNode* headA, ListNode* headB) {
     }
 
     return headA;
+}
+
+ListNode* getIntersectionNodeFast(ListNode* headA, ListNode* headB) {
+    std::unordered_set<ListNode*> aNodes, bNodes;
+    while (headA || headB) {
+        if (headA)
+            aNodes.insert(headA);
+        if (headB)
+            bNodes.insert(headB);
+        if (headA && bNodes.find(headA) != end(bNodes))
+            return headA;
+        if (headB && aNodes.find(headB) != end(aNodes))
+            return headB;
+        if (headA)
+            headA = headA->next;
+        if (headB)
+            headB = headB->next;
+    }
+    return nullptr;
 }
