@@ -21,12 +21,12 @@ std::string decodeString(const std::string& s) {
             std::string decodedPart;
             decodedPart.reserve(decoded.top().size() * numbers.top());
             for (int j = 0; j < numbers.top(); ++j)
-                decodedPart += decoded.top();
+                decodedPart.append(decoded.top());
             decoded.pop();
             numbers.pop();
-            decoded.top() += decodedPart;
+            decoded.top().append(decodedPart);
         } else if (numberBegin == -1) {
-            decoded.top() += s[i];
+            decoded.top().append(std::string{s[i]});
         }
     }
     return decoded.top();
