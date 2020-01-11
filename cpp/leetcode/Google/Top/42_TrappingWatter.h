@@ -9,24 +9,9 @@
 
 int calcCurrentTrap(std::vector<int>& trapVals) {
     int res = 0;
-    if (trapVals.size() >= 3) {
-        auto trapBottom = begin(trapVals) + 1;
-        for (auto it = begin(trapVals) + 2; it != (end(trapVals) - 1); ++it) {
-            if (*it < *trapBottom)
-                trapBottom = it;
-        }
-        auto trapLeft = begin(trapVals);
-        auto trapRight = end(trapVals) - 1;
-        for (auto it = begin(trapVals) + 1; it != trapBottom; ++it) {
-            if (*it >= *trapRight)
-                trapLeft = it;
-        }
-
-        int trapWidth = std::distance(trapLeft, trapRight) - 1;
-        int trapHeight = std::min(*trapLeft, *trapRight);
-        res = std::max(0, trapWidth * trapHeight - std::accumulate(trapLeft + 1, trapRight, 0));
-    }
-
+    int trapHeight = std::min(trapVals.front(), trapVals.back());
+    for (size_t i = 1; i < trapVals.size() - 1; ++i)
+        res += std::max(trapHeight - trapVals[i], 0);
     trapVals.clear();
     return res;
 }
