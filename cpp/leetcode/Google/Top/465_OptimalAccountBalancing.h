@@ -7,26 +7,26 @@
 #include <set>
 using namespace std;
 
-using SortedDeptsT = multiset<int>;
-using DeptItT = SortedDeptsT::const_iterator;
-using UsedItersT = vector<DeptItT>;
+using NonZeroBalancesT = multiset<int>;
+using BalanceItT = NonZeroBalancesT::const_iterator;
+using ZeroBalancesT = vector<BalanceItT>;
 
-bool nSum(const DeptItT& deptBeginIt, const DeptItT& deptEndIt, UsedItersT& usedIters, int n, int val) {
-    if (n == 1) {
-        auto numIt = lower_bound(deptBeginIt, deptEndIt, val);
-        if (numIt != deptEndIt && *numIt == val) {
-            usedIters.push_back(numIt);
+bool findCompensatingBalances(const BalanceItT& balanceBeginIt, const BalanceItT& balanceEndIt, ZeroBalancesT& zeroedBalances, int balancesCnt, int val) {
+    if (balancesCnt == 1) {
+        auto numIt = lower_bound(balanceBeginIt, balanceEndIt, val);
+        if (numIt != balanceEndIt && *numIt == val) {
+            zeroedBalances.push_back(numIt);
             return true;
         }
         return false;
     }
 
-    for (auto deptIt = deptBeginIt; deptIt != deptEndIt; ++deptIt) {
+    for (auto deptIt = balanceBeginIt; deptIt != balanceEndIt; ++deptIt) {
         int remainingVal = val - *deptIt;
         auto nextIt = deptIt;
         ++nextIt;
-        if (nSum(nextIt, deptEndIt,usedIters,n - 1, remainingVal)) {
-            usedIters.push_back(deptIt);
+        if (findCompensatingBalances(nextIt, balanceEndIt, zeroedBalances, balancesCnt - 1, remainingVal)) {
+            zeroedBalances.push_back(deptIt);
             return true;
         }
     }
@@ -35,31 +35,31 @@ bool nSum(const DeptItT& deptBeginIt, const DeptItT& deptEndIt, UsedItersT& used
 }
 
 int minTransfers(const vector<vector<int>>& transactions) {
-    unordered_map<int, int> depts;
+    unordered_map<int, int> peopleBalances;
     for (auto& t : transactions) {
-        depts[t[0]] -= t[2];
-        depts[t[1]] += t[2];
+        peopleBalances[t[0]] -= t[2];
+        peopleBalances[t[1]] += t[2];
     }
 
-    multiset<int> sortedDepts;
-    for (const auto& d : depts) {
+    multiset<int> nonZeroBalances;
+    for (const auto& d : peopleBalances) {
         if (d.second != 0)
-            sortedDepts.insert(d.second);
+            nonZeroBalances.insert(d.second);
     }
 
-    int transfers = 0;
-    int n = 2;
-    while (!sortedDepts.empty()) {
-        UsedItersT usedIters;
-        while (!sortedDepts.empty() && nSum(begin(sortedDepts), end(sortedDepts), usedIters, n, 0)) {
-            transfers += (n - 1);
-            for (auto it : usedIters)
-                sortedDepts.erase(it);
-            usedIters.clear();
+    int totalTransfersCnt = 0;
+    int balancesCnt = 2;
+    while (!nonZeroBalances.empty()) {
+        ZeroBalancesT zeroedBalances;
+        while (!nonZeroBalances.empty() && findCompensatingBalances(begin(nonZeroBalances), end(nonZeroBalances), zeroedBalances, balancesCnt, 0)) {
+            totalTransfersCnt += (balancesCnt - 1);
+            for (auto it : zeroedBalances)
+                nonZeroBalances.erase(it);
+            zeroedBalances.clear();
         }
-        ++n;
+        ++balancesCnt;
     }
-    return transfers;
+    return totalTransfersCnt;
 }
 
 #endif //ALGORITHMICCHALLENGES_465_OPTIMALACCOUNTBALANCING_H
