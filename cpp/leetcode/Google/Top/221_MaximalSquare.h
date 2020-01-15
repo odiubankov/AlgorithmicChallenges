@@ -4,6 +4,8 @@
 
 #include <vector>
 
+using namespace std;
+
 int getSquareSize(std::vector<std::vector<char>>& matrix, std::size_t i, std::size_t j) {
     std::size_t k = 1;
     for (;;++k) {
@@ -34,6 +36,31 @@ int maximalSquare(std::vector<std::vector<char>>& matrix) {
                 if (square > maxSquare)
                     maxSquare = square;
             }
+    return maxSquare * maxSquare;
+}
+
+int maximalSquareDP(const vector<vector<char>>& matrix) {
+    if (matrix.empty() || matrix.front().empty())
+        return 0;
+    vector<vector<int>> maxSquareDP(matrix.size(), vector<int>(matrix.front().size(), 0));
+    for (int i = 0; i < matrix[0].size(); ++i)
+        maxSquareDP[0][i] = matrix[0][i] == '1' ? 1 : 0;
+    for (int i = 0; i < matrix.size(); ++i)
+        maxSquareDP[i][0] = matrix[i][0] == '1' ? 1 : 0;
+    for (int i = 1; i < matrix.size(); ++i) {
+        for (int j = 1; j < matrix.front().size(); ++j) {
+            if (matrix[i][j] == '1') {
+                int minNeigbourSquare = min(maxSquareDP[i][j - 1], maxSquareDP[i - 1][j]);
+                minNeigbourSquare = min(minNeigbourSquare, maxSquareDP[i - 1][j - 1]);
+                maxSquareDP[i][j] = minNeigbourSquare + 1;
+            }
+        }
+    }
+    int maxSquare = 0;
+    for (const auto& row : maxSquareDP) {
+        for (auto cell : row)
+            maxSquare = max(maxSquare, cell);
+    }
     return maxSquare * maxSquare;
 }
 

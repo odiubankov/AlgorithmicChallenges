@@ -8,7 +8,7 @@ TEST(MaximalSquare, test) {
         {'1','1','1','1','1'},
         {'1','0','0','1','0'}
     };
-    ASSERT_EQ(4, maximalSquare(matrix));
+    ASSERT_EQ(4, maximalSquareDP(matrix));
 }
 
 TEST(MaximalSquare, test2) {
