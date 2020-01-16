@@ -10,4 +10,14 @@ int findKthLargest(vector<int>& nums, int k) {
     return *(rbegin(nums) + k - 1);
 }
 
+int findKthLargestHeap(vector<int>& nums, int k) {
+    less<int> comp;
+    make_heap(begin(nums), end(nums), comp);
+    for (int i = 0; i < k - 1; ++i) {
+        pop_heap(begin(nums), end(nums), comp);
+        nums.pop_back();
+    }
+    return nums.front();
+}
+
 #endif //ALGORITHMICCHALLENGES_215_KTHLARGESTELEMENTINANARRAY_H
