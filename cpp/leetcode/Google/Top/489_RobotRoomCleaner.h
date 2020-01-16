@@ -138,6 +138,7 @@ public:
             CellSetT visited;
             vector<Direction> directions;
             getRouteToNext(pos_, directions, visited);
+            reverse(begin(directions), end(directions));
             for (auto directionIt = begin(directions); directionIt != end(directions) - 1; ++directionIt) {
                 rotateToDirection(robot, *directionIt);
                 robot.move();

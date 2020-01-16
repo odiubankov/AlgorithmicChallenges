@@ -4,6 +4,9 @@
 
 #include "DataStructures/TreeNode.h"
 #include <queue>
+#include <sstream>
+
+using namespace std;
 
 class SolutionIsSubtree {
     bool areEqual(TreeNode* left, TreeNode* right) {
@@ -48,6 +51,29 @@ public:
                 nodes.push(node->right);
         }
         return false;
+    }
+
+    void preOrderTraversal(TreeNode* node, stringstream& ss) {
+        ss << "|" << node->val << "|";
+        if (node->left)
+            preOrderTraversal(node->left, ss);
+        else
+            ss << "l";
+        if (node->right)
+            preOrderTraversal(node->right, ss);
+        else
+            ss << "r";
+    }
+
+    bool isSubtreeStr(TreeNode* s, TreeNode* t) {
+        if (!t)
+            return true;
+        if (!s)
+            return false;
+        stringstream ssS, ssT;
+        preOrderTraversal(s, ssS);
+        preOrderTraversal(t, ssT);
+        return ssS.str().find(ssT.str()) != string::npos;
     }
 };
 
