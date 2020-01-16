@@ -3,6 +3,10 @@
 #define ALGORITHMICCHALLENGES_7_BUILDORDER_H
 
 #include <vector>
+#include <unordered_set>
+#include <queue>
+
+using namespace std;
 
 class SolutionTopologicalSort {
     using ItemsT = std::vector<std::vector<int>>;
@@ -33,6 +37,37 @@ public:
             if (!addItem(i, addedItems, items, result))
                 return {};
         return result;
+    }
+};
+
+class SolutionTopologicalSortNoRecursion {
+public:
+    vector<int> findOrder(int numItems, const std::vector<vector<int>>& prerequisites) {
+        vector<unordered_set<size_t>> courseDependsOn(numItems);
+        vector<unordered_set<size_t>> dependentOnTheCourse(numItems);
+        for (auto& prerequisite : prerequisites) {
+            courseDependsOn[prerequisite.front()].insert(prerequisite.back());
+            dependentOnTheCourse[prerequisite.back()].insert(prerequisite.front());
+        }
+        vector<int> order;
+        order.reserve(numItems);
+        queue<int> buildQueue;
+        for (int i = 0; i < numItems; ++i) {
+            if (courseDependsOn[i].empty())
+                buildQueue.push(i);
+        }
+        while (!buildQueue.empty()) {
+            order.push_back(buildQueue.front());
+            buildQueue.pop();
+            for (auto dependent : dependentOnTheCourse[order.back()]) {
+                courseDependsOn[dependent].erase(order.back());
+                if (courseDependsOn[dependent].empty())
+                    buildQueue.push(dependent);
+            }
+        }
+        if (order.size() != numItems)
+            return {};
+        return order;
     }
 };
 
