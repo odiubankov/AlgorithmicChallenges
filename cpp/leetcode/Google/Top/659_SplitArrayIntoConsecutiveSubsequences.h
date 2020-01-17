@@ -3,39 +3,30 @@
 #define ALGORITHMICCHALLENGES_659_SPLITARRAYINTOCONSECUTIVESUBSEQUENCES_H
 
 #include <vector>
-#include <deque>
-#include <algorithm>
+#include <unordered_map>
 
 using namespace std;
 
 bool isPossible(const vector<int>& nums) {
-    if (nums.size() < 3)
-        return false;
-    deque<pair<int, int>> subsequences;
-    subsequences.emplace_back(nums.front(), 1);
-    auto it = begin(nums) + 1;
-    while (it != end(nums)) {
-        if (*it == subsequences.back().first) {
-            subsequences.emplace_front(*it, 1);
-            ++it;
-        } else if ((*it - subsequences.back().first) > 1) {
-            if (any_of(begin(subsequences), end(subsequences), [](auto& ss) { return ss.second < 3; }))
+    unordered_map<int, int> valsCnt, tails;
+    for (auto num : nums)
+        ++valsCnt[num];
+    for (auto num : nums) {
+        if (valsCnt[num] > 0) {
+            if (tails[num] > 0) {
+                --tails[num];
+                ++tails[num + 1];
+            } else if (valsCnt[num + 1] > 0 &&valsCnt[num + 2] > 0) {
+                --valsCnt[num + 1];
+                --valsCnt[num + 2];
+                ++tails[num + 3];
+            } else {
                 return false;
-            subsequences.clear();
-            subsequences.emplace_back(*it, 1);
-            ++it;
-        } else { //(*it - subsequences.back().back()) == 1
-            auto ssIt = begin(subsequences);
-            for (; ssIt != end(subsequences) && it != end(nums) && ((*it - ssIt->first) == 1); ++ssIt, ++it) {
-                ssIt->first = *it;
-                ++ssIt->second;
             }
-            if (any_of(ssIt, end(subsequences), [](auto& ss) { return ss.second < 3; } ))
-                return false;
-            subsequences.erase(ssIt, end(subsequences));
+            --valsCnt[num];
         }
     }
-    return all_of(begin(subsequences), end(subsequences), [](auto& ss) { return ss.second >= 3; });
+    return true;
 }
 
 #endif //ALGORITHMICCHALLENGES_659_SPLITARRAYINTOCONSECUTIVESUBSEQUENCES_H
