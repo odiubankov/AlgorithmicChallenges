@@ -7,7 +7,7 @@ public:
     int hammingDistance(int x, int y) {
         int xorRes = x ^ y;
         int res = 0;
-        for (int i = 0; i < 32; ++i)
+        for (int i = 0; i < sizeof(x) * 8; ++i)
             if (xorRes & (1 << i))
                 ++res;
         return res;
