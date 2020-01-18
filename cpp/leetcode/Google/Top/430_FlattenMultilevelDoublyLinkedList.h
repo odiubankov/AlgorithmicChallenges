@@ -34,14 +34,13 @@ Node* flatten(Node* head) {
                 branches.push(runner->next);
             runner->next = runner->child;
             runner->child = nullptr;
-            runner = runner->next;
         } else {
             if (!runner->next && !branches.empty()) {
                 runner->next = branches.top();
                 branches.pop();
             }
-            runner = runner->next;
         }
+        runner = runner->next;
     }
     return head;
 }
