@@ -37,83 +37,44 @@
 #include <vector>
 #include <string>
 
-namespace leetcode
-{
+namespace leetcode {
 
-class Solution
-{
+class Solution {
     using BoardT = std::vector<std::vector<char>>;
-    using VisitedCellsT = std::vector<std::vector<bool>>;
-    bool checkNextCell(
-        const BoardT &board,
-        VisitedCellsT &visitedCells,
-        std::string::iterator &charIter,
-        const std::string::iterator &wordEnd,
-        int i,
-        int j)
-    {
-        ++charIter;
-        if (charIter == wordEnd)
+    static bool checkNextCell(
+        BoardT &board,
+        std::string::const_iterator charIter,
+        const std::string::const_iterator &wordEnd,
+        size_t i,
+        size_t j) {
+        if (*charIter != board[i][j])
+            return false;
+        board[i][j] = '*';
+        auto nextIter = charIter + 1;
+        if (nextIter == wordEnd)
             return true;
-
-        visitedCells[i][j] = true;
-
-        //up
-        if (i > 0 && *charIter == board[i - 1][j] && !visitedCells[i - 1][j]) {
-            if (checkNextCell(board, visitedCells, charIter, wordEnd, i - 1, j))
-                return true;
-        }
-
-        //down
-        if (i < (board.size() - 1) &&
-            *charIter == board[i + 1][j] &&
-            !visitedCells[i + 1][j]) {
-            if (checkNextCell(board, visitedCells, charIter, wordEnd, i + 1, j))
-                return true;
-        }
-
-        //right
-        if (j < (board.front().size() - 1) &&
-            *charIter == board[i][j + 1] &&
-            !visitedCells[i][j + 1]) {
-            if (checkNextCell(board, visitedCells, charIter, wordEnd, i, j + 1))
-                return true;
-        }
-
-        //left
-        if (j > 0 &&
-            *charIter == board[i][j - 1] &&
-            !visitedCells[i][j - 1]) {
-            if (checkNextCell(board, visitedCells, charIter, wordEnd, i, j - 1))
-                return true;
-        }
-
-        visitedCells[i][j] = false;
-        --charIter;
+        if (i > 0 && checkNextCell(board, nextIter, wordEnd, i - 1, j))
+            return true;
+        if (i < (board.size() - 1) && checkNextCell(board, nextIter, wordEnd, i + 1, j))
+            return true;
+        if (j < (board.front().size() - 1) && checkNextCell(board, nextIter, wordEnd, i, j + 1))
+            return true;
+        if (j > 0 && checkNextCell(board, nextIter, wordEnd, i, j - 1))
+            return true;
+        board[i][j] = *charIter;
         return false;
     }
 
 public:
-    bool exist(std::vector<std::vector<char>> &board, std::string word)
-    {
+    bool exist(BoardT &board, const std::string& word) {
         if (word.empty())
             return true;
-
-        if (board.empty() || board.front().empty())
-            return false;
-
-        auto wordBegin = begin(word);
-        auto wordEnd = end(word);
-        VisitedCellsT visitedCells(board.size(), std::vector<bool>(board.front().size(), false));
-        for (int i = 0; i < board.size(); ++i) {
-            for (int j = 0; j < board.front().size(); ++j) {
-                if (board[i][j] == word.front()) {
-                    if (checkNextCell(board, visitedCells, wordBegin, wordEnd, i, j))
-                        return true;
-                }
+        for (size_t i = 0; i < board.size(); ++i) {
+            for (size_t j = 0; j < board.front().size(); ++j) {
+                if (checkNextCell(board, begin(word), end(word), i, j))
+                    return true;
             }
         }
-
         return false;
     }
 };
