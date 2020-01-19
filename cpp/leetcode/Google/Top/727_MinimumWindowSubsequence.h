@@ -8,7 +8,7 @@
 #include <vector>
 using namespace std;
 
-string minWindow(const string& S, const string& T) {
+string minWindow2(const string& S, const string& T) {
     size_t minLength = numeric_limits<size_t>::max();
     size_t minLengthStart = numeric_limits<size_t>::max();
     unordered_map<char, vector<pair<size_t, size_t>>> waitingCharacters;
@@ -40,6 +40,49 @@ string minWindow(const string& S, const string& T) {
     if (minLengthStart == numeric_limits<size_t>::max())
         return "";
     return S.substr(minLengthStart, minLength);
+}
+
+string minWindowSlidingWindow(const string& S, const string& T) {
+    if (T.empty())
+        return "";
+    auto minSubstrBegin = end(S);
+    auto minSubstrEnd = end(S);
+    auto substrBegin = end(S);
+    auto substrEnd = end(S);
+    auto sIt = begin(S);
+    auto tIt = begin(T);
+    while (sIt != end(S)) {
+        if (*sIt == *tIt) {
+            if (substrBegin == end(S)) {
+                substrBegin = sIt;
+            }
+            ++sIt;
+            ++tIt;
+            if (tIt == end(T)) {
+                substrEnd = sIt;
+                do {
+                    --sIt;
+                    --tIt;
+                    while (*sIt != *tIt)
+                        --sIt;
+                } while (tIt != begin(T));
+                substrBegin = sIt;
+                if (minSubstrBegin == end(S) ||
+                    distance(minSubstrBegin, minSubstrEnd) > distance(substrBegin, substrEnd)) {
+                    minSubstrBegin = substrBegin;
+                    minSubstrEnd = substrEnd;
+                }
+                substrBegin = end(S);
+                tIt = begin(T);
+                ++sIt;
+            }
+        } else {
+            ++sIt;
+        }
+    }
+    if (minSubstrBegin == end(S))
+        return "";
+    return string(minSubstrBegin, minSubstrEnd);
 }
 
 #endif //ALGORITHMICCHALLENGES_727_MINIMUMWINDOWSUBSEQUENCE_H
