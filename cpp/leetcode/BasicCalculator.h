@@ -32,93 +32,32 @@
 #include <string>
 #include <vector>
 #include <cstdlib>
+#include <sstream>
 
-namespace leetcode
-{
+using namespace std;
 
-class Solution
-{
-    long getOperand(const std::string &s, int &i)
-    {
-        for (; i < static_cast<int>(s.size()); ++i)
-            if (s[i] != ' ')
-                break;
+namespace leetcode {
 
-        std::string result{s[i++]};
-        for (; i < static_cast<int>(s.size()); ++i)
-            if (isdigit(s[i]) != 0)
-                result.append(1, s[i]);
+int calculate(const string& s) {
+    istringstream in('+' + s + '+');
+    long long total = 0, term = 0;
+    char op = 0;
+    while (in >> op) {
+        if (op == '+' or op == '-') {
+            total += term;
+            in >> term;
+            term *= (op == '+' ? 1 : -1);
+        } else {
+            long long n = 0;
+            in >> n;
+            if (op == '*')
+                term *= n;
             else
-                break;
-
-        return strtol(result.c_str(), nullptr, 10);
+                term /= n;
+        }
     }
-
-    char getOperator(const std::string &s, int &i)
-    {
-        for (; i < static_cast<int>(s.size()); ++i)
-            if (s[i] != ' ')
-                return s[i++];
-
-        return ' ';
-    }
-
-public:
-    long calculate(const std::string &s)
-    {
-        std::vector<long> operands;
-        std::vector<bool> operators;
-        int i = 0;
-        operands.push_back(getOperand(s, i));
-        while (i < static_cast<int>(s.size())) {
-            auto oper = getOperator(s, i);
-            switch (oper) {
-                case '*':*operands.rbegin() = *operands.rbegin() * getOperand(s, i);
-                    break;
-                case '/':*operands.rbegin() = *operands.rbegin() / getOperand(s, i);
-                    break;
-                case '+':operands.push_back(getOperand(s, i));
-                    operators.push_back(true);
-                    break;
-                case '-':operands.push_back(getOperand(s, i));
-                    operators.push_back(false);
-                    break;
-                default:break;
-            }
-        }
-
-        if (operands.size() == 1) {
-            return operands.front();
-        }
-
-        auto operandIt = begin(operands);
-        auto result = *operandIt;
-        ++operandIt;
-        auto operatorIt = begin(operators);
-        if (*operatorIt) {
-            result += *operandIt;
-        }
-        else {
-            result -= *operandIt;
-        }
-
-        ++operatorIt;
-        ++operandIt;
-        while (operandIt != end(operands)) {
-            if (*operatorIt) {
-                result += *operandIt;
-            }
-            else {
-                result -= *operandIt;
-            }
-
-            ++operandIt;
-            ++operatorIt;
-        }
-
-        return result;
-    }
-};
+    return total;
+}
 
 }//namespace leetcode
 

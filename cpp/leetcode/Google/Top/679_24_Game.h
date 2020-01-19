@@ -14,13 +14,13 @@ vector<double> getCombinations(const vector<int>& nums) {
         return {static_cast<double>(nums.back())};
     vector<double> combinations;
     for (size_t i = 0; i < nums.size(); ++i) {
-        vector<int> other;
-        other.reserve(nums.size() - 1);
+        vector<int> otherNumbers;
+        otherNumbers.reserve(nums.size() - 1);
         for (size_t j = 0; j < nums.size(); ++j) {
             if (i != j)
-                other.push_back(nums[j]);
+                otherNumbers.push_back(nums[j]);
         }
-        auto otherCombinations = getCombinations(other);
+        auto otherCombinations = getCombinations(otherNumbers);
         for (auto val : otherCombinations) {
             combinations.push_back(nums[i] + val);
             combinations.push_back(nums[i] - val);
