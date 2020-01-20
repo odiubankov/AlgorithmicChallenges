@@ -32,17 +32,11 @@ struct BuildingEndComp {
 };
 
 using BuidingEndsT = priority_queue<BuildingEnd, vector<BuildingEnd>, BuildingEndComp>;
-BuidingEndsT getBuildingEnds(const vector<vector<int>>& buildings) {
-    BuidingEndsT bEnds;
-    for (const auto& building : buildings)
-        bEnds.emplace(building[1], building[2]);
-    return bEnds;
-}
 
 vector<vector<int>> getSkyline(const vector<vector<int>>& buildings) {
     if (buildings.empty())
         return {};
-    auto bEnds = getBuildingEnds(buildings);
+    BuidingEndsT bEnds;
     multiset<int> heigthes;
     int skylineX = buildings.front().front();
     vector<vector<int>> skyline;
@@ -51,6 +45,7 @@ vector<vector<int>> getSkyline(const vector<vector<int>>& buildings) {
             const auto& building = *bIt;
             if (building.front() == skylineX) {
                 heigthes.insert(building.back());
+                bEnds.emplace(building[1], building[2]);
                 ++bIt;
                 continue;
             }
