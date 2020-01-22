@@ -11,7 +11,7 @@ using namespace std;
 using NodeDistanceT = pair<int, int>;
 struct NodeDistanceComp {
     bool operator()(const NodeDistanceT& node1, const NodeDistanceT& node2) const {
-        return node1.first > node2.first;
+        return node1.first < node2.first;
     }
 };
 
@@ -32,8 +32,10 @@ int networkDelayTime(const vector<vector<int>>& times, int N, int K) {
             continue;
         visited[next.second] = true;
         maxDistance = max(maxDistance, next.first);
-        for (const auto& connection : connections[next.second])
-            nodesQueue.emplace(next.first + connection.second, connection.first);
+        for (const auto& connection : connections[next.second]) {
+            if (!visited[connection.first])
+                nodesQueue.emplace(next.first + connection.second, connection.first);
+        }
     }
     return all_of(begin(visited), end(visited), [](auto item) { return item; }) ? maxDistance : -1;
 }
