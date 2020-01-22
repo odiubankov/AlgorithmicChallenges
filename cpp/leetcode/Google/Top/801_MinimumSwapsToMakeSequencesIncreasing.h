@@ -4,34 +4,34 @@
 
 #include <vector>
 #include <algorithm>
+#include <limits>
 using namespace std;
 
-vector<bool> getSwaps(const vector<int>& A, const vector<int>& B, size_t j) {
-    vector<bool> lefts{true};
-    for (size_t i = j; i < A.size(); ++i) {
-        if (A[i] > A[i - 1] && A[i] >B[i - 1] && B[i] > B[i - 1] && B[i] > A[i - 1])
-            break;
-        if (lefts.back())
-            lefts.push_back(!(A[i] <= A[i - 1] || B[i] <= B[i - 1]));
-        else
-            lefts.push_back(!(A[i] <= B[i - 1] || B[i] <= A[i - 1]));
-    }
-    return lefts;
-}
+// [3,3,8,9,10]
+// [1,7,4,6,8]
 
 int minSwap(const vector<int>& A, const vector<int>& B) {
-    int minSwaps = 0;
-    for (size_t i = 1; i < A.size();) {
-        auto swaps = getSwaps(A, B, i);
-        if (swaps.size() == 1) {
-            ++i;
-        } else {
-            auto leftsCnt = count(begin(swaps), end(swaps), true);
-            minSwaps += min<int>(leftsCnt, swaps.size() - leftsCnt);
-            i += swaps.size();
+    if (A.size() < 2)
+        return 0;
+    int prevSwappedCnt = 1;
+    int prevOriginalCnt = 0;
+    auto aPrevIt = begin(A);
+    auto bPrevIt = begin(B);
+    for (auto aIt = aPrevIt + 1, bIt = bPrevIt + 1; aIt != end(A); ++aIt, ++bIt, ++aPrevIt, ++bPrevIt) {
+        int swappedCnt = numeric_limits<int>::max();
+        int originalCnt = numeric_limits<int>::max();
+        if (*aIt > *aPrevIt && *bIt > *bPrevIt) {
+            swappedCnt = prevSwappedCnt + 1;
+            originalCnt = prevOriginalCnt;
         }
+        if (*aIt > *bPrevIt && *bIt > *aPrevIt) {
+            swappedCnt = min(swappedCnt, prevOriginalCnt + 1);
+            originalCnt = min(originalCnt, prevSwappedCnt);
+        }
+        prevSwappedCnt = swappedCnt;
+        prevOriginalCnt = originalCnt;
     }
-    return minSwaps;
+    return min(prevSwappedCnt, prevOriginalCnt);
 }
 
 #endif //ALGORITHMICCHALLENGES_801_MINIMUMSWAPSTOMAKESEQUENCESINCREASING_H
