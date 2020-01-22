@@ -3,27 +3,30 @@
 #define ALGORITHMICCHALLENGES_12_PATHSWITHSUM_H
 
 #include "DataStructures/TreeNode.h"
+#include <unordered_map>
+
+using namespace std;
 
 class SolutionPathSum {
-    int sumWithNode(TreeNode* root, int sum) {
-        if (!root)
+    using PrefixSumsT = unordered_map<int, int>;
+
+    int getSumCnt(TreeNode* node, PrefixSumsT& prefixSums, int targetSum, int totalSum) {
+        if (!node)
             return 0;
-        auto diff = sum - root->val;
-        return sumWithNode(root->left, diff) +
-            sumWithNode(root->right, diff) +
-            (root->val == sum ? 1 : 0);
+        totalSum += node->val;
+        int cnt = prefixSums[totalSum - targetSum];
+        ++prefixSums[totalSum];
+        cnt += getSumCnt(node->left, prefixSums, targetSum, totalSum);
+        cnt += getSumCnt(node->right, prefixSums, targetSum, totalSum);
+        --prefixSums[totalSum];
+        return cnt;
     }
 
 public:
     int pathSum(TreeNode* root, int sum) {
-        if (!root)
-            return 0;
-        auto diff = sum - root->val;
-        return sumWithNode(root->left, diff)
-            + sumWithNode(root->right, diff)
-            + pathSum(root->left, sum)
-            + pathSum(root->right, sum)
-            + (root->val == sum ? 1 : 0);
+        PrefixSumsT prefixSums;
+        prefixSums[0] = 1;
+        return getSumCnt(root, prefixSums, sum, 0);
     }
 };
 #endif //ALGORITHMICCHALLENGES_12_PATHSWITHSUM_H
