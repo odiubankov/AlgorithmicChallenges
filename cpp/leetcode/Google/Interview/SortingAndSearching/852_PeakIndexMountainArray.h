@@ -14,7 +14,7 @@ int peakIndexInMountainArray(const vector<int>& A) {
         auto midIt2 = upIt + 2 * oneThirdLength;
         if (*midIt2 >= *midIt1 && *midIt2 >= *upIt) {
             upIt = midIt1;
-        } else if (*midIt1 >= *upIt && *midIt2 < *midIt1) {
+        } else if (*midIt2 < *midIt1) {
             downIt = midIt2 + 1;
         } else if (*midIt1 < *upIt) {
             downIt = midIt1 + 1;
