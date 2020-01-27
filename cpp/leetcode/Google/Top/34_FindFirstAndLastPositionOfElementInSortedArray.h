@@ -10,8 +10,6 @@ using namespace std;
 using VectorIteratorT = vector<int>::iterator;
 
 VectorIteratorT lowerBound(VectorIteratorT itB, VectorIteratorT itE, int target) {
-    if (itB == itE)
-        return itE;
     auto l = itB;
     auto r = itE;
     auto targetIt = itE;
@@ -30,8 +28,6 @@ VectorIteratorT lowerBound(VectorIteratorT itB, VectorIteratorT itE, int target)
 }
 
 VectorIteratorT upperBound(VectorIteratorT itB, VectorIteratorT itE, int target) {
-    if (itB == itE)
-        return itE;
     auto l = itB;
     auto r = itE;
     auto targetIt = itE;
