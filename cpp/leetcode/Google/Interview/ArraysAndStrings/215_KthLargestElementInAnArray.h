@@ -3,6 +3,7 @@
 #define ALGORITHMICCHALLENGES_215_KTHLARGESTELEMENTINANARRAY_H
 
 #include <vector>
+#include <queue>
 using namespace std;
 
 int findKthLargest(vector<int>& nums, int k) {
@@ -11,13 +12,14 @@ int findKthLargest(vector<int>& nums, int k) {
 }
 
 int findKthLargestHeap(vector<int>& nums, int k) {
-    less<int> comp;
-    make_heap(begin(nums), end(nums), comp);
-    for (int i = 0; i < k - 1; ++i) {
-        pop_heap(begin(nums), end(nums), comp);
-        nums.pop_back();
+    priority_queue<int, vector<int>, greater<int> > topK;
+    for (int i = 0; i != k; ++i)
+        topK.push(nums[i]);
+    for (int i = k; i != nums.size(); ++i) {
+        topK.push(nums[i]);
+        topK.pop();
     }
-    return nums.front();
+    return topK.top();
 }
 
 #endif //ALGORITHMICCHALLENGES_215_KTHLARGESTELEMENTINANARRAY_H
