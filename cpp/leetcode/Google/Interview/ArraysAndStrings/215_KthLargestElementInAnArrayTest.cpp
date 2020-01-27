@@ -3,5 +3,5 @@
 
 TEST(KthLargestElementInAnArray, test) {
     vector<int> vals{3,2,1,5,6,4};
-    ASSERT_EQ(5,findKthLargestHeap(vals, 2));
+    ASSERT_EQ(5,findKthLargestQuickSelect(vals, 2));
 }
