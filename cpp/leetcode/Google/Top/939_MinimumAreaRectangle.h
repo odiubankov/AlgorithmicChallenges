@@ -6,6 +6,8 @@
 #include <limits>
 #include <algorithm>
 #include <unordered_map>
+#include <unordered_set>
+
 using namespace std;
 
 void eraseDuplicates(vector<int>& vals) {
@@ -53,6 +55,40 @@ int minAreaRect(const vector<vector<int>>& points) {
         }
     }
     return rectFound ? minArea : 0;
+}
+
+struct VectorHash {
+    std::hash<int> hasher;
+    size_t operator()(const std::vector<int>& v) const {
+        return hasher(v.front()) ^ hasher(v.back());
+    }
+};
+
+int minAreaRectDiagonal(vector<vector<int>>& points) {
+    unordered_set<vector<int>, VectorHash> pointsHashSet;
+    for (auto& point : points)
+        pointsHashSet.insert(point);
+    
+    int minAreRect = 0;
+
+    for (auto point1It = begin(points); point1It != end(points); ++point1It) {
+        for (auto point2It = point1It + 1; point2It != end(points); ++point2It) {
+            if (point1It->front() != point2It->front() && 
+                point1It->back() != point2It->back()) {
+                if (pointsHashSet.find({point1It->front(), point2It->back()}) != end(pointsHashSet) && 
+                    pointsHashSet.find({point2It->front(), point1It->back()}) != end(pointsHashSet)) {
+                    int area = abs(point1It->front() - point2It->front()) * abs(point1It->back() - point2It->back());
+                    if (minAreRect == 0) {
+                        minAreRect = area;
+                    } else {
+                        minAreRect = min(minAreRect, area);
+                    }
+                }
+            }
+        }
+    }
+
+    return minAreRect;
 }
 
 #endif //ALGORITHMICCHALLENGES_939_MINIMUMAREARECTANGLE_H
