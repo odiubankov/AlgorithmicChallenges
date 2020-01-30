@@ -6,6 +6,7 @@
 #include <map>
 #include <limits>
 #include <numeric>
+#include <queue>
 using namespace std;
 
 struct Worker{
@@ -13,6 +14,8 @@ struct Worker{
     double ratio = 0.0;
     Worker(int q, double r) : quality{q}, ratio{r} {}
 };
+
+using QualityPriorityQueue = priority_queue<int, vector<int>, less<>>;
 
 double mincostToHireWorkers(const vector<int>& quality, const vector<int>& wage, int K) {
     if (K == 0)
@@ -27,23 +30,17 @@ double mincostToHireWorkers(const vector<int>& quality, const vector<int>& wage,
          [](const Worker& w1, const Worker& w2){ return w1.ratio < w2.ratio; });
     int qualSum = 0;
     auto wIt = begin(workers);
-    for (int i = 0; i < K; ++i) {
+    for (int i = 0; i < K; ++i, ++wIt)
         qualSum += wIt->quality;
-        ++wIt;
-    }
     double minCost = qualSum * (wIt - 1)->ratio;
-    vector<int> qualHeap;
-    qualHeap.reserve(K + 1); // + 1 because in the cycle below one more item will be pushed & popped on each iter
-    transform(begin(workers), wIt, back_inserter(qualHeap),
-              [](const auto& w) { return w.quality; });
-    make_heap(begin(qualHeap), end(qualHeap));
+    QualityPriorityQueue qualityPriorityQueue;
+    for_each(begin(workers), wIt,
+        [&qualityPriorityQueue](const auto& w) { qualityPriorityQueue.push(w.quality); });
     for (; wIt != end(workers); ++wIt) {
-        qualHeap.push_back(wIt->quality);
-        push_heap(begin(qualHeap), end(qualHeap));
+        qualityPriorityQueue.push(wIt->quality);
         qualSum += wIt->quality;
-        pop_heap(begin(qualHeap), end(qualHeap));
-        qualSum -= qualHeap.back();
-        qualHeap.pop_back();
+        qualSum -= qualityPriorityQueue.top();
+        qualityPriorityQueue.pop();
         double cost = wIt->ratio * qualSum;
         minCost = min(minCost, cost);
     }
