@@ -28,7 +28,7 @@ bool isPalindrome(ListNode* head) {
         rightHead = rightHead->next;
 
     bool palindrome = true;
-    while (palindrome && leftHead && rightHead) {
+    while (palindrome && leftHead) {
         palindrome = leftHead->val == rightHead->val;
         leftHead = leftHead->next;
         rightHead = rightHead->next;
