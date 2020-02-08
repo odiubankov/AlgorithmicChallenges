@@ -43,14 +43,13 @@ struct Point
 class Solution
 {
 public:
-    unsigned long maxPoints(std::vector<Point> &points)
-    {
+    unsigned long maxPoints(std::vector<Point> &points) {
         if (points.size() < 3)
             return static_cast<unsigned long>(points.size());
 
         unsigned long maxPointsOnLine = 2;
-        int i = 0;
-        while (i < points.size() - 2) {
+
+        for (int i = 0; i != (points.size() - 2); ++i) {
             unsigned long equalPointsCnt = 0;
             std::unordered_map<long double, int> slopePoints;
             for (int j = i + 1; j < points.size(); ++j) {
@@ -84,8 +83,6 @@ public:
                     }
                 }
             }
-
-            ++i;
         }
 
 
