@@ -48,22 +48,35 @@ int maximalRectangleDP(vector<vector<char>>& matrix) {
         return 0;
     int x = matrix.front().size();
     int y = matrix.size();
+    // on each step increment height if 1 and reset to 0 if 0
+    // l represents at which point from left 1 are starting on previous line
+    // r represents at which point to the right 1 are ending on previous line
     std::vector<int> height(x, 0), l(x, 0), r(x, x - 1);
+    //create counters for current line left and right positions
     int maxRect = 0, left = 0, right = x - 1;
+    // iterate over each row
     for (int i = 0; i < y; ++i) {
+        // iterate over each column in row
         for (int j = 0; j < x; ++j) {
             if (matrix[i][j] == '1') {
+                //increment height
                 ++height[j];
+                //set left either to current row or prev row rightest position
                 l[j] = max(l[j], left);
             } else {
+                // set current left at least to the next item in the row
                 left = j + 1;
+                // reset height
                 height[j] = 0;
+                // reset left to 0
                 l[j] = 0;
             }
         }
+        //same as for left
         for (int j = x - 1; j >=0; --j) {
             if (matrix[i][j] == '1') {
                 r[j] = min(r[j], right);
+                //the point [i][j] should not be in corner
                 auto rect = height[j] * (r[j] - l[j] + 1);
                 maxRect = max(maxRect, rect);
             } else {
