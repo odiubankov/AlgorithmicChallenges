@@ -22,66 +22,75 @@ class Master {
 
 class Solution {
 public:
-    struct WordInfo{
-        array<unordered_set<size_t>, 6> sameLetters_;
-    };
 
-    void findSecretWord(const vector<string>& wordlist, Master& master) {
-        vector<WordInfo> words;
-        words.resize(wordlist.size());
-        for (size_t i = 0; i < wordlist.size(); ++i) {
-            for (size_t j = i + 1; j < wordlist.size(); ++j) {
+    static const int LettersCnt = 6;
+
+    using SameLettersCntWordsT = array<unordered_set<size_t>, LettersCnt>;
+    vector<SameLettersCntWordsT> cntSameLetters(const vector<string>& wordList) {
+        vector<SameLettersCntWordsT> sameLettersWords(wordList.size());
+        for (size_t i = 0; i < wordList.size(); ++i) {
+            for (size_t j = i + 1; j < wordList.size(); ++j) {
                 size_t sameCnt = 0;
-                for (size_t k = 0; k < 6; ++k) {
-                    if (wordlist[i][k] == wordlist[j][k])
+                for (size_t k = 0; k < LettersCnt; ++k) {
+                    if (wordList[i][k] == wordList[j][k])
                         ++sameCnt;
                 }
-                words[i].sameLetters_[sameCnt].insert(j);
-                words[j].sameLetters_[sameCnt].insert(i);
+                sameLettersWords[i][sameCnt].insert(j);
+                sameLettersWords[j][sameCnt].insert(i);
             }
         }
-        unordered_set<size_t> indexes;
-        unordered_set<size_t> incorrect;
-        indexes.reserve(wordlist.size());
-        for (size_t i = 0; i < wordlist.size(); ++i)
-            indexes.insert(i);
+        return sameLettersWords;
+    }
 
-        size_t sameCnt = 0;
-        do {
-            for (size_t i : indexes) {
-                for (size_t j = 0; j < 6; ++j) {
-                    for (auto it = begin(words[i].sameLetters_[j]); it != end(words[i].sameLetters_[j]);) {
-                        if (incorrect.find(*it) != end(incorrect)) {
-                            it = words[i].sameLetters_[j].erase(it);
-                        } else {
-                            ++it;
-                        }
-                    }
+    void fillAllIndexes(vector<size_t>& indexesToCheck, size_t cnt) {
+        indexesToCheck.reserve(cnt);
+        for (size_t i = 0; i < cnt; ++i)
+            indexesToCheck.push_back(i);
+    }
+
+    void findSecretWord(const vector<string>& wordList, Master& master) {
+        auto sameLettersWords = cntSameLetters(wordList);
+
+        vector<size_t> indexesToCheck;
+        fillAllIndexes(indexesToCheck, wordList.size());
+
+        unordered_set<size_t> incorrectIndexes;
+        for(;;) {
+            size_t minMaxSameLettersCnt = numeric_limits<size_t>::max();
+            size_t indexToTry = numeric_limits<size_t>::max();
+            for (size_t i : indexesToCheck) {
+                size_t maxGroupItemsCnt = 0;
+                for (size_t j = 0; j < LettersCnt; ++j) {
+                    const auto& sameCntIndexes = sameLettersWords[i][j];
+                    auto sameCntIndexesCnt = std::count_if(begin(sameCntIndexes), end(sameCntIndexes),
+                        [&incorrectIndexes](auto index){
+                        return incorrectIndexes.find(index) == end(incorrectIndexes); });
+                    maxGroupItemsCnt = std::max<size_t>(maxGroupItemsCnt, sameCntIndexesCnt);
+                }
+
+                if (maxGroupItemsCnt < minMaxSameLettersCnt) {
+                    minMaxSameLettersCnt = maxGroupItemsCnt;
+                    indexToTry = i;
                 }
             }
-            size_t minCnt = numeric_limits<size_t>::max();
-            size_t minMaxGroup = indexes.size();
-            for (size_t i : indexes) {
-                size_t maxGroup = 0;
-                for (size_t j = 0; j < 6; ++j) {
-                    if (words[i].sameLetters_[j].size() > maxGroup)
-                        maxGroup = words[i].sameLetters_[j].size();
-                }
-                if (maxGroup < minCnt) {
-                    minCnt = maxGroup;
-                    minMaxGroup = i;
-                }
-            }
-            sameCnt = master.guess(wordlist[minMaxGroup]);
-            incorrect.insert(minMaxGroup);
-            for (size_t i = 0; i < 6 ; ++i) {
+
+            auto sameCnt = master.guess(wordList[indexToTry]);
+            if (sameCnt == LettersCnt)
+                return;
+
+            incorrectIndexes.insert(indexToTry);
+            for (size_t i = 0; i < LettersCnt ; ++i) {
                 if (i != sameCnt) {
-                    for (size_t j : words[minMaxGroup].sameLetters_[i])
-                        incorrect.insert(j);
+                    for (size_t j : sameLettersWords[indexToTry][i])
+                        incorrectIndexes.insert(j);
                 }
             }
-            indexes = words[minMaxGroup].sameLetters_[sameCnt];
-        } while(sameCnt != 6);
+
+            indexesToCheck.clear();
+            const auto& sameCntIndexes = sameLettersWords[indexToTry][sameCnt];
+            std::copy_if(begin(sameCntIndexes), end(sameCntIndexes), std::back_inserter(indexesToCheck),
+                [&incorrectIndexes](auto i) { return incorrectIndexes.find(i) == end(incorrectIndexes); });
+        }
     }
 };
 
