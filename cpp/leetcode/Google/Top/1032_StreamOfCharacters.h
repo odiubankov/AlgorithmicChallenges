@@ -17,7 +17,7 @@ constexpr size_t getCharIndex(char c) { return c - 'a'; }
 class StreamChecker {
 public:
     struct Trie {
-        std::array<shared_ptr<Trie>, getAlphabetSize()> children_;
+        std::array<unique_ptr<Trie>, getAlphabetSize()> children_;
         bool finish_ = false;
     }trie_;
 
@@ -27,7 +27,7 @@ public:
             for (auto c : word) {
                 size_t cI = getCharIndex(c);
                 if (!current->children_[cI])
-                    current->children_[cI] = make_shared<Trie>();
+                    current->children_[cI] = make_unique<Trie>();
                 current = current->children_[cI].get();
             }
             current->finish_ = true;
