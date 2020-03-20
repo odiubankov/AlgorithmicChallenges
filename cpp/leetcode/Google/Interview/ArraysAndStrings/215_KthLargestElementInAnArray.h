@@ -5,11 +5,12 @@
 #include <vector>
 #include <queue>
 #include <random>
+#include <algorithm>
 
 using namespace std;
 
 int findKthLargest(vector<int>& nums, int k) {
-    sort(begin(nums), end(nums));
+    std::sort(begin(nums), end(nums));
     return *(rbegin(nums) + k - 1);
 }
 

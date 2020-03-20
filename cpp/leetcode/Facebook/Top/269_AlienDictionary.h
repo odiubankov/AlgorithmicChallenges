@@ -8,80 +8,67 @@
 #include <unordered_map>
 #include <unordered_set>
 #include <stack>
+#include <queue>
+
 using namespace std;
 
-using NodesT = unordered_map<char, unordered_set<char>>;
-using VisitedT = unordered_set<char>;
-using CharStackT = stack<char>;
-
-void addWordChars(const string& word, NodesT& nodes) {
-    for (auto c : word) {
-        auto it = nodes.find(c);
-        if (it == end(nodes))
-            nodes.emplace(c, unordered_set<char>{});
-    }
-}
-
-bool nodesTopologicalSort(
-    char node,
-    const NodesT& nodes,
-    VisitedT& visited,
-    VisitedT& iterationChars,
-    CharStackT& orderedChars) {
-    for (auto child : nodes.at(node)) {
-        if (visited.find(child) == end(visited)) {
-            visited.insert(child);
-            iterationChars.insert(child);
-            if (!nodesTopologicalSort(child, nodes, visited, iterationChars, orderedChars))
-                return false;
-        } else {
-            if (iterationChars.find(child) != end(iterationChars))
-                return false;
-        }
-    }
-    orderedChars.push(node);
-    return true;
-}
+using CharDependencies = unordered_map<char, unordered_set<char>>;
 
 string alienOrder(const vector<string>& words) {
     if (words.empty())
         return {};
-    NodesT nodes;
-    auto wordIt = begin(words);
-    addWordChars(*wordIt, nodes);
-    auto prevWordIt = wordIt;
-    ++wordIt;
-    for (; wordIt != end(words); ++wordIt, ++prevWordIt) {
-        addWordChars(*wordIt, nodes);
+
+    CharDependencies charsAfter;
+    for (const auto& word : words) {
+        for (auto c : word) {
+            charsAfter[c];
+        }
+    }
+    auto charsBefore = charsAfter;
+
+    for (auto prevWordIt = begin(words), wordIt = begin(words) + 1; wordIt != end(words); ++wordIt, ++prevWordIt) {
         auto charItPrev = begin(*prevWordIt);
         auto charItCurrent = begin(*wordIt);
-        do {
-            if (*charItCurrent != *charItPrev) {
-                nodes[*charItPrev].insert(*charItCurrent);
+        while (charItPrev != end(*(prevWordIt))) {
+            if (charItCurrent == end(*wordIt)) {
+                return "";
+            }
+            if (*charItCurrent == *charItPrev) {
+                ++charItPrev;
+                ++charItCurrent;
+            } else {
+                charsAfter[*charItPrev].insert(*charItCurrent);
+                charsBefore[*charItCurrent].insert(*charItPrev);
                 break;
             }
-            ++charItPrev;
-            ++charItCurrent;
-        } while (charItPrev != end(*(prevWordIt)) && charItCurrent != end(*wordIt));
+        }
     }
-    CharStackT orderedChars;
-    VisitedT visited;
-    for (const auto& node : nodes) {
-        if (visited.find(node.first) != end(visited))
-            continue;
-        visited.insert(node.first);
-        VisitedT iterationChars;
-        iterationChars.insert(node.first);
-        if (!nodesTopologicalSort(node.first, nodes, visited, iterationChars, orderedChars))
-            return {};
+
+    queue<char> charsQueue;
+    for (const auto& c : charsBefore) {
+        if (c.second.empty()) {
+            charsQueue.push(c.first);
+        }
     }
-    string res;
-    res.reserve(orderedChars.size());
-    while (!orderedChars.empty()) {
-        res.push_back(orderedChars.top());
-        orderedChars.pop();
+
+    string alphabet;
+    alphabet.reserve(charsAfter.size());
+    while (!charsQueue.empty()) {
+        auto c = charsQueue.front();
+        alphabet.push_back(c);
+        charsQueue.pop();
+        for (auto after : charsAfter[c]) {
+            charsBefore[after].erase(c);
+            if (charsBefore[after].empty()) {
+                charsQueue.push(after);
+            }
+        }
     }
-    return res;
+
+    if (alphabet.size() != charsAfter.size())
+        return "";
+
+    return alphabet;
 }
 
 #endif //ALGORITHMICCHALLENGES_269_ALIENDICTIONARY_H
