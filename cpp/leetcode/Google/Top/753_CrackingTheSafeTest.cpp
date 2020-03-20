@@ -2,6 +2,7 @@
 #include <gtest/gtest.h>
 
 TEST(CrackingTheSafe, test) {
+    ASSERT_EQ("0", crackSafe(1, 1));
     ASSERT_EQ("01", crackSafe(1, 2));
     ASSERT_EQ("00110", crackSafe(2, 2));
 }
