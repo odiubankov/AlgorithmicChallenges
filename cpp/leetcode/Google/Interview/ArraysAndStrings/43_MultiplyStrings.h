@@ -57,4 +57,20 @@ string multiply(const string& num1, const string& num2) {
     return resStr;
 }
 
+int charToNum(char c) { return c - '0'; }
+
+string multiplySimple(const string& num1, const string& num2) {
+    string res(num1.size() + num2.size(), '0');
+    for (int i = num1.size() - 1; i >= 0; --i) {
+        for (int j = num2.size() - 1; j >= 0; --j) {
+            int sum = (charToNum(num1.at(i))) * (charToNum(num2.at(j))) + charToNum(res.at(i + j + 1));
+            res[i + j + 1] = sum % 10 + '0';
+            res[i + j] += sum / 10;
+        }
+    }
+
+    auto startPos = res.find_first_not_of("0");
+    return startPos != string::npos ? res.substr(startPos) : "0";
+}
+
 #endif //ALGORITHMICCHALLENGES_43_MULTIPLYSTRINGS_H
