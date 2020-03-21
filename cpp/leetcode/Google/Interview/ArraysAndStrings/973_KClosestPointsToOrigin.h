@@ -4,6 +4,8 @@
 
 #include <vector>
 #include <cmath>
+#include <algorithm>
+#include <queue>
 using namespace std;
 
 struct Point {
@@ -13,6 +15,12 @@ struct Point {
      : coord{move(coord_)} {
         originDist = sqrt(static_cast<double>(pow(abs(coord.front()),2) +
                                               pow(abs(coord.back()), 2)));
+    }
+};
+
+struct OriginDistComp {
+    bool operator()(const Point& p1, const Point& p2) {
+        return p1.originDist < p2.originDist;
     }
 };
 
@@ -39,6 +47,24 @@ vector<vector<int>> kClosest(const vector<vector<int>>& points, int K) {
     closestCoord.reserve(K);
     transform(begin(closestPoints), end(closestPoints), back_inserter(closestCoord),
         [](const auto& point) { return point.coord; } );
+    return closestCoord;
+}
+
+vector<vector<int>> kClosestQueue(const vector<vector<int>>& points, int K) {
+    priority_queue<Point, vector<Point>, OriginDistComp> closestPoints;
+    for (size_t i = 0; i != K; ++i) {
+        closestPoints.emplace(points[i]);
+    }
+    for (size_t i = K; i != points.size(); ++i) {
+        closestPoints.emplace(points[i]);
+        closestPoints.pop();
+    }
+    vector<vector<int>> closestCoord;
+    closestCoord.reserve(K);
+    while (!closestPoints.empty()) {
+        closestCoord.push_back(move(closestPoints.top().coord));
+        closestPoints.pop();
+    }
     return closestCoord;
 }
 
