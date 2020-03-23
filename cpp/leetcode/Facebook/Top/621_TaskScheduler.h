@@ -5,6 +5,7 @@
 #include <vector>
 #include <unordered_map>
 #include <algorithm>
+#include <array>
 
 using namespace std;
 
@@ -36,6 +37,31 @@ int leastInterval(const vector<char>& tasks, int n) {
         order.erase(find_if(begin(order), end(order), [](const auto& val) { return val.second == 0; }), end(order));
     }
     return totalIterCnt;
+}
+
+constexpr size_t alphabetSize() { return 'Z' - 'A' + 1; };
+constexpr size_t charIndex(char c) { return c - 'A'; }
+
+int leastIntervalCountEmptySlots(const vector<char>& tasks, int n) {
+    if (tasks.empty())
+        return 0;
+
+    array<int, alphabetSize()> tasksCnt{};
+    for (auto t : tasks)
+        ++tasksCnt[charIndex(t)];
+
+    auto mostOftenTaskCntIt = max_element(begin(tasksCnt), end(tasksCnt));
+    int emptySlots = (*mostOftenTaskCntIt - 1) * n;
+    for (auto it = begin(tasksCnt); it != end(tasksCnt); ++it) {
+        if (it != mostOftenTaskCntIt) {
+            emptySlots -= min(*it, *mostOftenTaskCntIt - 1);
+        }
+    }
+
+    int intervals = tasks.size();
+    if (emptySlots > 0)
+        intervals += emptySlots;
+    return intervals;
 }
 
 #endif //ALGORITHMICCHALLENGES_621_TASKSCHEDULER_H
