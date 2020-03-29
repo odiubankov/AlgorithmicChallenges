@@ -23,7 +23,7 @@ public:
             return 0;
         int maxLeft = getMaxLength(node->left, maxDiameter);
         int maxRight = getMaxLength(node->right, maxDiameter);
-        maxDiameter = max(1 + maxLeft + maxRight, maxDiameter);
+        maxDiameter = max(maxLeft + maxRight, maxDiameter);
         return 1 + max(maxLeft, maxRight);
     }
 
@@ -32,7 +32,7 @@ public:
             return 0;
         int maxDiameter = 0;
         getMaxLength(root, maxDiameter);
-        return maxDiameter - 1;
+        return maxDiameter;
     }
 };
 
