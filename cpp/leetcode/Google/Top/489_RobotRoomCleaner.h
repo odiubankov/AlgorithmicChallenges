@@ -7,6 +7,7 @@
 #include <queue>
 #include <functional>
 #include <limits>
+#include <stack>
 
 using namespace std;
 
@@ -32,133 +33,120 @@ class Robot {
 //    vector<vector<int>> grid;
 };
 
-struct Direction {
-    int x = 0;
-    int y = 0;
+struct Pos {
+    int x_ = 0;
+    int y_ = 0;
 
-    bool operator==(const Direction& direction) const {
-        return x == direction.x && y == direction.y;
+    bool operator==(const Pos& other) const {
+        return x_ == other.x_ && y_ == other.y_;
     }
 
-    bool operator!=(const Direction& direction) const {
-        return !(*this == direction);
-    }
-
-    Direction& operator=(const Direction& direction) {
-        if (this == &direction)
-            return *this;
-        x = direction.x;
-        y = direction.y;
-        return *this;
+    bool operator!=(const Pos& other) const {
+        return !(*this == other);
     }
 };
 
-struct Cell {
-    int x = 0;
-    int y = 0;
-
-    Cell& operator+=(const Direction& direction) {
-        x += direction.x;
-        y += direction.y;
-        return *this;
-    }
-
-    bool operator==(const Cell& cell) const {
-        return x == cell.x && y == cell.y;
-    }
-};
-
-struct cell_hash {
-    std::size_t operator () (const Cell& cell) const {
-        std::size_t h1 = std::hash<int>()(cell.x);
-        std::size_t h2 = std::hash<int>()(cell.y);
+struct pos_hash {
+    std::size_t operator () (const Pos& cell) const {
+        auto h1 = std::hash<int>()(cell.x_);
+        auto h2 = std::hash<int>()(cell.y_);
         return h1 ^ h2;
     }
 };
 
-using CellSetT = unordered_set<Cell, cell_hash>;
+enum class RobotDirection {
+    Up,
+    Right,
+    Down,
+    Left
+};
 
-class SolutionCleanRoom
-{
-private:
-    const Direction Up{0, 1}, Down{0, -1}, Left{-1, 0}, Right{1, 0};
-    const vector<Direction> Directions{Up, Down, Left, Right};
-
-    CellSetT cleaned_, blocked_, toClean_;
-    Cell pos_{0, 0};
-    Direction direction_ = Up;
-
-    void addCellsToClean() {
-        for (const auto& direction : Directions) {
-            auto nextCell = pos_;
-            nextCell += direction;
-            if (blocked_.find(nextCell) == end(blocked_) && cleaned_.find(nextCell) == end(cleaned_))
-                toClean_.insert(nextCell);
-        }
+RobotDirection nextDirectionClockWise(RobotDirection direction) {
+    switch (direction) {
+        case RobotDirection ::Up:
+            return RobotDirection ::Right;
+        case RobotDirection ::Right:
+            return RobotDirection ::Down;
+        case RobotDirection ::Down:
+            return RobotDirection ::Left;
+        case RobotDirection ::Left:
+            return RobotDirection ::Up;
     }
+}
 
-    bool getRouteToNext(Cell pos, vector<Direction>& directions, CellSetT& visited) const {
-        if (toClean_.find(pos) != end(toClean_))
-            return true;
-        visited.insert(pos);
-        for (const auto& direction : Directions) {
-            auto nextPos = pos;
-            nextPos += direction;
-            if (visited.find(nextPos) == end(visited) &&
-                blocked_.find(nextPos) == end(blocked_)) {
-                if (getRouteToNext(nextPos, directions, visited)) {
-                    directions.push_back(direction);
-                    return true;
+class SoltutionSpiralBacktracking {
+public:
+    Robot* robot_ = nullptr;
+    Pos pos_;
+    RobotDirection direction_ = RobotDirection::Up;
+    unordered_set<Pos, pos_hash> visited_;
+    stack<Pos> path_;
+
+Pos getNextPos() const {
+    Pos pos = pos_;
+    switch (direction_) {
+        case RobotDirection ::Up:
+            ++pos.y_;
+            break;
+        case RobotDirection ::Right:
+            ++pos.x_;
+            break;
+        case RobotDirection ::Down:
+            --pos.y_;
+            break;
+        case RobotDirection ::Left:
+            --pos.x_;
+            break;
+    }
+    return pos;
+}
+
+void turnRight() {
+    robot_->turnRight();
+    direction_ = nextDirectionClockWise(direction_);
+}
+
+void cleanRoom(Robot& robot) {
+    robot_ = &robot;
+    pos_ = Pos{};
+    direction_ = RobotDirection::Up;
+    visited_.clear();
+    path_ = stack<Pos>{};
+
+    robot.clean();
+    visited_.insert(pos_);
+
+    for(;;) {
+        bool moved = false;
+        for (int i = 0; i < 4; ++i) {
+            auto nextPos = getNextPos();
+            if (visited_.find(nextPos) == end(visited_)) {
+                visited_.insert(nextPos);
+                if (robot_->move()) {
+                    path_.push(pos_);
+                    pos_ = nextPos;
+                    robot_->clean();
+                    moved = true;
+                    break;
                 }
             }
+            turnRight();
         }
-        return false;
-    }
 
-    void rotateToDirection(Robot &robot, const Direction& direction) {
-        while (direction_ != direction) {
-            robot.turnRight();
-            if (direction_ == Up)
-                direction_ = Right;
-            else if (direction == Right)
-                direction_ = Down;
-            else if (direction == Down)
-                direction_ = Left;
-            else
-                direction_ = Up;
-        }
-    }
+        if (!moved) {
+            if (path_.empty())
+                return;
+            while (getNextPos() != path_.top()) {
+                turnRight();
+            }
 
-public:
-    void cleanRoomDFS(Robot &robot) {
-        robot.clean();
-        cleaned_.insert(pos_);
-        addCellsToClean();
-        while (!toClean_.empty()) {
-            CellSetT visited;
-            vector<Direction> directions;
-            getRouteToNext(pos_, directions, visited);
-            reverse(begin(directions), end(directions));
-            for (auto directionIt = begin(directions); directionIt != end(directions) - 1; ++directionIt) {
-                rotateToDirection(robot, *directionIt);
-                robot.move();
-                pos_ += *directionIt;
-            }
-            rotateToDirection(robot, directions.back());
-            if (robot.move()) {
-                robot.clean();
-                pos_ += directions.back();
-                toClean_.erase(pos_);
-                cleaned_.insert(pos_);
-                addCellsToClean();
-            } else {
-                auto blockedCell = pos_;
-                blockedCell += directions.back();
-                toClean_.erase(blockedCell);
-                blocked_.insert(blockedCell);
-            }
+            robot_->move();
+            pos_ = path_.top();
+            path_.pop();
         }
     }
+}
+
 };
 
 #endif //ALGORITHMICCHALLENGES_489_ROBOTROOMCLEANER_H
