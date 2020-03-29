@@ -6,35 +6,39 @@
 #include <unordered_map>
 using namespace std;
 
-int totalFruit(const vector<int>& tree) {
+namespace {
     const size_t BinsCount = 2;
-    if (tree.size() <= BinsCount)
-        return tree.size();
-    auto leftIt = begin(tree);
-    const auto itE = end(tree);
-    auto rightIt = leftIt + 1;
-    unordered_map<int, size_t> fruitsCnt;
-    ++fruitsCnt[*leftIt];
-    for (;rightIt != itE; ++rightIt) {
-        if (fruitsCnt.size() < BinsCount || fruitsCnt.find(*rightIt) != end(fruitsCnt))
-            ++fruitsCnt[*rightIt];
+}
+
+using FruitsT = unordered_map<int, size_t>;
+using TreeIt = vector<int>::const_iterator;
+
+void collectFruitsUntilPossible(FruitsT& fruits, TreeIt& rightIt, const TreeIt& endIt) {
+    for (;rightIt != endIt; ++rightIt) {
+        if (fruits.size() < BinsCount || fruits.find(*rightIt) != end(fruits))
+            ++fruits[*rightIt];
         else
             break;
     }
+}
+
+int totalFruit(const vector<int>& tree) {
+    if (tree.size() <= BinsCount)
+        return tree.size();
+    auto leftIt = cbegin(tree);
+    auto rightIt = leftIt + 1;
+    unordered_map<int, size_t> fruits;
+    ++fruits[*leftIt];
+    collectFruitsUntilPossible(fruits, rightIt, cend(tree));
     int maxFruits = distance(leftIt, rightIt);
-    while (rightIt != itE) {
-        for (;fruitsCnt.size() == BinsCount; ++leftIt) {
-            if (--fruitsCnt[*leftIt] == 0)
-                fruitsCnt.erase(*leftIt);
+    while (rightIt != end(tree)) {
+        for (;fruits.size() == BinsCount; ++leftIt) {
+            if (--fruits[*leftIt] == 0)
+                fruits.erase(*leftIt);
         }
-        ++fruitsCnt[*rightIt];
+        ++fruits[*rightIt];
         ++rightIt;
-        for (;rightIt != itE; ++rightIt) {
-            if (fruitsCnt.find(*rightIt) != end(fruitsCnt))
-                ++fruitsCnt[*rightIt];
-            else
-                break;
-        }
+        collectFruitsUntilPossible(fruits, rightIt, cend(tree));
         int fruits = distance(leftIt, rightIt);
         maxFruits = max(maxFruits, fruits);
     }
