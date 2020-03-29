@@ -2,27 +2,31 @@
 #ifndef ALGORITHMICCHALLENGES_359_LOGGERRATELIMITER_H
 #define ALGORITHMICCHALLENGES_359_LOGGERRATELIMITER_H
 
-#include <unordered_map>
+#include <unordered_set>
+#include <queue>
 using namespace std;
 
 class Logger {
 public:
-    unordered_map<string, int> msgs;
+    unordered_set<string> msgs;
+    queue<pair<int, string>> msgQueue;
+
 
     /** Returns true if the message should be printed in the given timestamp, otherwise returns false.
         If this method returns false, the message will not be printed.
         The timestamp is in seconds granularity. */
     bool shouldPrintMessage(int timestamp, const string& message) {
-        auto msgIt = msgs.find(message);
-        if (msgIt == end(msgs)) {
-            msgs[message] = timestamp;
-            return true;
+        while (!msgQueue.empty() && (timestamp - msgQueue.front().first) >= 10) {
+            msgs.erase(msgQueue.front().second);
+            msgQueue.pop();
         }
-        if ((timestamp - msgIt->second) >= 10) {
-            msgIt->second = timestamp;
-            return true;
-        }
-        return false;
+
+        if (msgs.find(message) != end (msgs))
+            return false;
+
+        msgQueue.emplace(timestamp, message);
+        msgs.insert(message);
+        return true;
     }
 };
 
