@@ -5,6 +5,9 @@
 #include <vector>
 #include <cmath>
 #include <unordered_map>
+#include <unordered_set>
+#include <deque>
+#include <algorithm>
 
 using namespace std;
 
@@ -87,6 +90,66 @@ int confusingNumberII(int N) {
             }
         }
     }
+}
+
+int getDigitsCnt(int N) {
+    int cnt = 1;
+    N /= 10;
+    while (N != 0) {
+        ++cnt;
+        N /= 10;
+    }
+    return cnt;
+}
+
+template <typename ItT>
+int convertDigitsToNumber(const ItT& itBegin, const ItT& itEnd) {
+    int res = 0;
+    for (auto it = itBegin; it != itEnd; ++it) {
+        res *= 10;
+        res += *it;
+    }
+    return res;
+}
+
+bool findConfusingNumbers(vector<int>& digits1, vector<int>& digits2, size_t digitIndex, int& cnt, int N) {
+    static vector<pair<int, int>> confusingDigits {
+            {0, 0},
+            {1, 1},
+            {6, 9},
+            {8, 8},
+            {9, 6},
+    };
+
+    if (digits1.size() == digitIndex) {
+        auto number1 = convertDigitsToNumber(begin(digits1), end(digits1));
+        if (number1 > N)
+            return true;
+        auto nonZeroIt = std::find_if(begin(digits2), end(digits2), [](auto d) { return d != 0; });
+        auto number2 = convertDigitsToNumber(rbegin(digits2), std::make_reverse_iterator(nonZeroIt));
+        if (number1 != number2) {
+            ++cnt;
+        }
+
+        return false;
+    }
+
+    for (const auto& digit : confusingDigits) {
+        digits1[digitIndex] = digit.first;
+        digits2[digitIndex] = digit.second;
+        if (findConfusingNumbers(digits1, digits2, digitIndex + 1, cnt, N))
+            return true;
+    }
+
+    return false;
+}
+
+int confusingNumberIISimple(int N) {
+    auto digitsCnt = getDigitsCnt(N);
+    vector<int> digits1(digitsCnt), digits2(digitsCnt);
+    int cnt = 0;
+    findConfusingNumbers(digits1, digits2, 0, cnt, N);
+    return cnt;
 }
 
 #endif //ALGORITHMICCHALLENGES_1088_CONFUSINGNUMBERII_H
