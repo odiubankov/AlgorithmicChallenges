@@ -11,7 +11,7 @@ int getCompressedLength(const std::string& str) {
     int charsCnt = 1;
     for (; strIter != cend(str); ++strIter) {
         if (*strIter != prevCharacter) {
-            compressedLength += log10(charsCnt) + 2;
+            compressedLength += static_cast<int>(log10(charsCnt) + 2);
             prevCharacter = *strIter;
             charsCnt = 1;
         } else {
@@ -19,7 +19,7 @@ int getCompressedLength(const std::string& str) {
         }
     }
 
-    return compressedLength + log10(charsCnt) + 2;
+    return compressedLength + static_cast<int>(log10(charsCnt)) + 2;
 }
 
 void addCharacter(std::string& compressedStr, char character, int cnt) {
@@ -34,7 +34,7 @@ std::string compressString(const std::string& str) {
         return str;
 
     auto newLength = getCompressedLength(str);
-    if (newLength >= str.length())
+    if (newLength >= static_cast<int>(str.length()))
         return str;
 
     std::string compressedStr;

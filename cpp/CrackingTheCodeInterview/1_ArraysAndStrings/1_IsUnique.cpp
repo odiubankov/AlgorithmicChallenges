@@ -3,7 +3,7 @@
 #include <array>
 
 bool isUnique(const std::string& str) {
-    if (str.length() > strutils::getCharactersCnt<char>())
+    if (str.length() > static_cast<size_t>(strutils::getCharactersCnt<char>()))
         return false;
 
     std::array<bool, strutils::getCharactersCnt<char>()> charAvailable = {false};
