@@ -1,4 +1,5 @@
 #include "2_StackMin.h"
+#include <algorithm>
 
 void StackMin::push(int val) {
     currentMin_ = std::min(currentMin_, val);

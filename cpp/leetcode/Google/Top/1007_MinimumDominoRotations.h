@@ -4,6 +4,7 @@
 
 #include <vector>
 #include <limits>
+#include <algorithm>
 
 int getMinRotationsBottom(const std::vector<int>& top, const std::vector<int>& bottom) {
     if (top.empty())

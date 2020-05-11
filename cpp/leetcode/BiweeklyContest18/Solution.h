@@ -104,7 +104,7 @@ vector<vector<int>> diagonalSort(vector<vector<int>>& mat) {
 }
 
 int maxValueAfterReverse(vector<int>& nums) {
-    
+    return 0;
 }
 
 

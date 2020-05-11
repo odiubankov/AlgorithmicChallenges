@@ -43,7 +43,7 @@ int calculate(const string& s) {
     long long total = 0, term = 0;
     char op = 0;
     while (in >> op) {
-        if (op == '+' or op == '-') {
+        if (op == '+' || op == '-') {
             total += term;
             in >> term;
             term *= (op == '+' ? 1 : -1);

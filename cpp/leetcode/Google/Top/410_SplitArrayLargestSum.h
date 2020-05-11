@@ -6,6 +6,7 @@
 #include <numeric>
 #include <unordered_map>
 #include <limits>
+#include <algorithm>
 
 using ValsT = std::vector<int>;
 using CacheT = std::unordered_map<std::size_t, std::unordered_map<std::size_t, std::unordered_map<int, unsigned long long>>>;

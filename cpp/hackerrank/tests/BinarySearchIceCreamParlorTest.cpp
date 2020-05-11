@@ -1,5 +1,6 @@
 #include "../BinarySearchIceCreamParlor.h"
 #include <gtest/gtest.h>
+#include <algorithm>
 
 namespace hackerrank
 {

@@ -12,24 +12,24 @@ using BalanceItT = NonZeroBalancesT::const_iterator;
 using ZeroBalancesT = vector<BalanceItT>;
 
 bool findCompensatingBalances(const BalanceItT& balanceBeginIt, const BalanceItT& balanceEndIt, ZeroBalancesT& zeroedBalances, int balancesCnt, int val) {
-    if (balancesCnt == 1) {
-        auto numIt = lower_bound(balanceBeginIt, balanceEndIt, val);
-        if (numIt != balanceEndIt && *numIt == val) {
-            zeroedBalances.push_back(numIt);
-            return true;
-        }
-        return false;
-    }
-
-    for (auto deptIt = balanceBeginIt; deptIt != balanceEndIt; ++deptIt) {
-        int remainingVal = val - *deptIt;
-        auto nextIt = deptIt;
-        ++nextIt;
-        if (findCompensatingBalances(nextIt, balanceEndIt, zeroedBalances, balancesCnt - 1, remainingVal)) {
-            zeroedBalances.push_back(deptIt);
-            return true;
-        }
-    }
+//    if (balancesCnt == 1) {
+//        auto numIt = lower_bound(balanceBeginIt, balanceEndIt, val);
+//        if (numIt != balanceEndIt && *numIt == val) {
+//            zeroedBalances.push_back(numIt);
+//            return true;
+//        }
+//        return false;
+//    }
+//
+//    for (auto deptIt = balanceBeginIt; deptIt != balanceEndIt; ++deptIt) {
+//        int remainingVal = val - *deptIt;
+//        auto nextIt = deptIt;
+//        ++nextIt;
+//        if (findCompensatingBalances(nextIt, balanceEndIt, zeroedBalances, balancesCnt - 1, remainingVal)) {
+//            zeroedBalances.push_back(deptIt);
+//            return true;
+//        }
+//    }
 
     return false;
 }

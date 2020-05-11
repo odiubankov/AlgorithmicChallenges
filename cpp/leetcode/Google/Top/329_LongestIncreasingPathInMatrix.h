@@ -3,6 +3,7 @@
 #define ALGORITHMICCHALLENGES_329_LONGESTINCREASINGPATHINMATRIX_H
 
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 using CacheT = vector<vector<int>>;

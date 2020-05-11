@@ -3,6 +3,7 @@
 #define ALGORITHMICCHALLENGES_221_MAXIMALSQUARE_H
 
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 

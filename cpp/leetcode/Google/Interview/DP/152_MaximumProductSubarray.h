@@ -3,6 +3,7 @@
 #define ALGORITHMICCHALLENGES_152_MAXIMUMPRODUCTSUBARRAY_H
 
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 //int getMaxProduct(int product, int firstNegativeMultiplier, int lastNegativeMultiplier, size_t productLength) {

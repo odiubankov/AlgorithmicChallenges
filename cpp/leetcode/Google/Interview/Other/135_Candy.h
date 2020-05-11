@@ -5,6 +5,7 @@
 #include <vector>
 #include <map>
 #include <numeric>
+#include <algorithm>
 using namespace std;
 
 int candy(const vector<int>& ratings) {
