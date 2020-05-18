@@ -55,3 +55,21 @@ TEST(ErectTheFence, test5) {
     auto res = outerTrees(trees);
     ASSERT_EQ(res.size(), 16);
 }
+
+TEST(ErectTheFence, test6) {
+    vector<Tree> trees{
+            Tree{0, 8},
+            Tree{1, 2},
+            Tree{2, 7},
+            Tree{3, 1},
+            Tree{4, 9},
+            Tree{5, 0},
+            Tree{5, 2},
+            Tree{7, 1},
+            Tree{7, 8},
+            Tree{9, 2},
+            Tree{9, 3},
+    };
+    auto res = outerTrees(trees);
+    ASSERT_EQ(res.size(), 9);
+}

@@ -41,15 +41,16 @@ vector<Tree> outerTrees(vector<Tree> const & trees) {
             slopes.emplace_back(slope, tree);
         }
     }
-    sort(begin(slopes), end(slopes),
-            [&trees](auto const& s1, auto const & s2) {
+    auto slopeComparator =[](auto const& s1, auto const & s2) {
         if (std::abs(s1.first - s2.first) > std::numeric_limits<double>::epsilon()) {
             return s1.first < s2.first;
-        } else {
+        } else if (s1.second.back() != s2.second.back()) {
             return s1.second.back() < s2.second.back();
+        } else {
+            return s1.second.front() < s2.second.front();
         }
-    });
-
+    };
+    sort(begin(slopes), end(slopes), slopeComparator);
     vector<Tree> outerTrees;
     outerTrees.push_back(bottomRightTree);
     for (auto slopeIt = begin(slopes); slopeIt != end(slopes);) {
