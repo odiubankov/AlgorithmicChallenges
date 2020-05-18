@@ -26,11 +26,9 @@ vector<Tree> outerTrees(vector<Tree> const & trees) {
 
     auto bottomRightTree = *std::max_element(begin(trees), end(trees),
             [](Tree const& t1, Tree const& t2){
-        if (t1.back() == t2.back()) {
-            return t1.front() < t2.front();
-        } else {
+        if (t1.back() != t2.back())
             return t1.back() > t2.back();
-        }
+        return t1.front() < t2.front();
     });
     vector<pair<double, Tree>> slopes;
     slopes.reserve(trees.size() - 1);
@@ -41,14 +39,12 @@ vector<Tree> outerTrees(vector<Tree> const & trees) {
             slopes.emplace_back(slope, tree);
         }
     }
-    auto slopeComparator =[](auto const& s1, auto const & s2) {
-        if (std::abs(s1.first - s2.first) > std::numeric_limits<double>::epsilon()) {
+    auto slopeComparator =[&bottomRightTree](auto const& s1, auto const & s2) {
+        if (std::abs(s1.first - s2.first) > std::numeric_limits<double>::epsilon())
             return s1.first < s2.first;
-        } else if (s1.second.back() != s2.second.back()) {
-            return s1.second.back() < s2.second.back();
-        } else {
+        if (s1.second.front() != s2.second.front())
             return s1.second.front() < s2.second.front();
-        }
+        return s1.second.back() < s2.second.back();
     };
     sort(begin(slopes), end(slopes), slopeComparator);
     vector<Tree> outerTrees;
