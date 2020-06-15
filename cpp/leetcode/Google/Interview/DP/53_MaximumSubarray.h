@@ -4,26 +4,18 @@
 
 #include <vector>
 #include <limits>
+#include <algorithm>
+
 using namespace std;
 
-int maxSubArray(const vector<int>& nums) {
-    int maxSum = numeric_limits<int>::min();
-    auto numIt = begin(nums);
-    auto sum = *numIt;
-    ++numIt;
-    for (; numIt != end(nums); ++numIt) {
-        if (*numIt < 0)
-            maxSum = max(maxSum, sum);
-
-        if (sum < 0) {
-            sum = *numIt;
-        } else {
-            sum += *numIt;
-            if (sum < 0)
-                sum = *numIt;
-        }
+int maxSubArray(vector<int> const& nums) {
+    int maxSum = *max_element(begin(nums), end(nums));
+    int sum = 0;
+    for (auto n : nums) {
+        sum += n;
+        maxSum = max(maxSum, sum);
+        sum = max(sum, 0);
     }
-    maxSum = max(maxSum, sum);
     return maxSum;
 }
 
