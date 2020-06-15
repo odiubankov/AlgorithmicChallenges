@@ -6,5 +6,10 @@ TEST(StringTransform, test) {
 }
 
 TEST(StringTransform, test2) {
-    ASSERT_FALSE(canConvert("leetcode", "codeleet"));
+    ASSERT_FALSE(canConvert("abcdefghijklmnopqrstuvwxyz", "bcdefghijklmnopqrstuvwxyza"));
+}
+
+TEST(StringTransform, test3) {
+    ASSERT_TRUE(canConvert("abcdefghijklmnopqrstuvwxyz",
+                           "bcdefghijklmnopqrstuvwxyzq"));
 }
