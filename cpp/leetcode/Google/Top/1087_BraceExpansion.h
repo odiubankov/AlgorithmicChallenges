@@ -5,6 +5,9 @@
 #include <vector>
 #include <string>
 #include <sstream>
+#include <algorithm>
+#include <iterator>
+
 using namespace std;
 
 class WordDelimitedByComma : public string
@@ -48,8 +51,10 @@ vector<string> expand(string S) {
             pos = closeBlock + 1;
         }
     }
+    for (auto& part : parts) {
+        sort(begin(part), end(part));
+    }
     auto combinations = getCombinations(begin(parts), end(parts));
-    sort(begin(combinations), end(combinations));
     return combinations;
 }
 
