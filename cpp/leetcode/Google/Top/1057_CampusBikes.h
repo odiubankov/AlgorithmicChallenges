@@ -36,5 +36,28 @@ vector<int> assignBikes(const vector<vector<int>>& workers, const vector<vector<
     return workerBikes;
 }
 
+vector<int> assignBikesBucketSort(vector<vector<int>> const& workers, vector<vector<int>> const& bikes) {
+    std::array<vector<pair<int, int>>, 2001> distances;
+    for (int worker = 0; worker < workers.size(); ++worker) {
+        for (int bike = 0; bike < bikes.size(); ++bike)
+            distances[getDistance(workers[worker], bikes[bike])].emplace_back(worker, bike);
+    }
+
+    int assignedWorkersCnt = 0;
+    vector<int> workerBikes(workers.size(), -1);
+    vector<bool> assignedBikes(bikes.size(), false);
+    for (auto const& distance : distances) {
+        for (auto const& workerBike : distance) {
+            if (workerBikes[workerBike.first] == -1 && !assignedBikes[workerBike.second]) {
+                workerBikes[workerBike.first] = workerBike.second;
+                assignedBikes[workerBike.second] = true;
+                if (++assignedWorkersCnt == workers.size())
+                    return workerBikes;
+            }
+        }
+    }
+    return workerBikes;
+}
+
 
 #endif //ALGORITHMICCHALLENGES_1057_CAMPUSBIKES_H
