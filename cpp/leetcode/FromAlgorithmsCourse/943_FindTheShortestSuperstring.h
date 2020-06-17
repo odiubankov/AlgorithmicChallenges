@@ -104,7 +104,7 @@ OverlapsT getOverlaps(vector<string> const& A) {
 
 RemainingStringsT getAllIndexes(size_t stringsCnt) {
     RemainingStringsT remainingStrings(0);
-    for (std::size_t i = 0; i != stringsCnt.size(); ++i)
+    for (std::size_t i = 0; i != stringsCnt; ++i)
         remainingStrings.set(i);
     return remainingStrings;
 }
@@ -130,7 +130,18 @@ CombinationT getShortestPathCombination(CombinationsT const& combinations,
     return shortestPathCombination;
 }
 
-string convertCombinationToString(Comb)
+string convertCombinationToString(CombinationT const& combination, vector<string> const& A, OverlapsT const& overlaps) {
+    stringstream ss;
+    auto indexIt = begin(combination);
+    ss << A[*indexIt];
+    auto prevIndex = *indexIt;
+    ++indexIt;
+    for (; indexIt != end(combination); ++indexIt) {
+        ss << A[*indexIt].substr(overlaps[prevIndex][*indexIt]);
+        prevIndex = *indexIt;
+    }
+    return ss.str();
+}
 
 string shortestSuperstring(vector<string> const& A) {
     if (A.empty())
@@ -140,17 +151,7 @@ string shortestSuperstring(vector<string> const& A) {
     auto remainingStrings = getAllIndexes(A.size());
     findShortestSuperstring(cache, A, overlaps, remainingStrings);
     auto shortestPathCombination = getShortestPathCombination(cache.at(remainingStrings), A, overlaps);
-
-    stringstream ss;
-    auto indexIt = begin(shortestPathCombination);
-    ss << A[*indexIt];
-    auto prevIndex = *indexIt;
-    ++indexIt;
-    for (; indexIt != end(shortestPathCombination); ++indexIt) {
-        ss << A[*indexIt].substr(overlaps[prevIndex][*indexIt]);
-        prevIndex = *indexIt;
-    }
-    return ss.str();
+    return convertCombinationToString(shortestPathCombination, A, overlaps);
 }
 
 #endif //ALGORITHMICCHALLENGES_943_FINDTHESHORTESTSUPERSTRING_H
