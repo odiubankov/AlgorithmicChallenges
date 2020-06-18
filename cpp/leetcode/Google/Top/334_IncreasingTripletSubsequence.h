@@ -3,6 +3,7 @@
 #define ALGORITHMICCHALLENGES_334_INCREASINGTRIPLETSUBSEQUENCE_H
 
 #include <vector>
+#include <algorithm>
 using namespace std;
 
 const int SEQUENCE = 3;
@@ -12,15 +13,10 @@ bool increasingTriplet(vector<int>& nums) {
     vector<int> sequence(SEQUENCE - 1, numeric_limits<int>::max());
     for (auto num : nums) {
         bool allLess = true;
-        for (auto& s : sequence) {
-            if (s >= num) {
-                allLess = false;
-                s = num;
-                break;
-            }
-        }
-        if (allLess)
+        auto posIt = std::lower_bound(begin(sequence), end(sequence), num);
+        if (posIt == end(sequence))
             return true;
+        *posIt = num;
     }
     return false;
 }
