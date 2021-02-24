@@ -1,4 +1,4 @@
-#include "../LongestUniqCharsSubstr.h"
+#include "LongestUniqCharsSubstr.h"
 #include <gtest/gtest.h>
 
 namespace leetcode

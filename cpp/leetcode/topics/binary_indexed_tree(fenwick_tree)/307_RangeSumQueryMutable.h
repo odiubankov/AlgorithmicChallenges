@@ -1,4 +1,5 @@
 //https://leetcode.com/problems/range-sum-query-mutable/
+//https://www.geeksforgeeks.org/binary-indexed-tree-or-fenwick-tree-2/
 #ifndef ALGORITHMICCHALLENGES_307_RANGESUMQUERYMUTABLE_H
 #define ALGORITHMICCHALLENGES_307_RANGESUMQUERYMUTABLE_H
 
@@ -7,10 +8,12 @@ using namespace std;
 
 class NumArray {
     vector<int> nums_;
-    vector<int> prefixSums_;//Fenwick Tre
+    vector<int> prefixSums_;//Fenwick Tree
 
     void updateImpl(int index, int diff) {
-        for (int i = index + 1; i < prefixSums_.size(); i += (i & (-i)))
+        for (int i = index + 1;
+             i < prefixSums_.size();
+             i += (i & (-i)))
             prefixSums_[i] += diff;
     }
 

@@ -1,4 +1,4 @@
-#include "../SubStringSearchKMP.h"
+#include "../topics/string/kmp/SubStringSearchKMP.h"
 #include <gtest/gtest.h>
 
 namespace leetcode
