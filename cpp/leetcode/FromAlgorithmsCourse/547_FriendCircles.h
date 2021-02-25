@@ -1,4 +1,5 @@
 //https://leetcode.com/problems/friend-circles/description/
+// Union find with path compression
 #ifndef ALGORITHMICCHALLENGES_547_FRIENDCIRCLES_H
 #define ALGORITHMICCHALLENGES_547_FRIENDCIRCLES_H
 
