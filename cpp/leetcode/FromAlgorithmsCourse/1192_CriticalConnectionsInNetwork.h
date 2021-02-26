@@ -46,6 +46,7 @@ void dfs(PathT path, VisitedT& visited, VisitedT& cycleVisited,
     for (auto connection : graph[currentServer]) {
         if (path.size() == 1 || connection != path[path.size() - 2]) {
             PathT connectionPath = path;
+//TODO replace copying to pop_back
             connectionPath.push_back(connection);
             dfs(connectionPath, visited, cycleVisited, components, graph);
         }
