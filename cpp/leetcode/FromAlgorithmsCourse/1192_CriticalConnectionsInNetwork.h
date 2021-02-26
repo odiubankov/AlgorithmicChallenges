@@ -1,4 +1,6 @@
 //https://leetcode.com/problems/critical-connections-in-a-network/
+//Tarjan algorithm
+
 #ifndef ALGORITHMICCHALLENGES_1192_CRITICALCONNECTIONSINNETWORK_H
 #define ALGORITHMICCHALLENGES_1192_CRITICALCONNECTIONSINNETWORK_H
 
