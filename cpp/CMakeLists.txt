@@ -9,8 +9,8 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "MSVC")
     set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MTd")
 endif ()
 
-add_subdirectory(libs/googletest)
-include_directories(libs/googletest/googletest/include)
+add_subdirectory(googletest)
+include_directories(googletest/googletest/include)
 
 file(GLOB_RECURSE SOURCE_FILES
         hackerrank/*.cpp /
