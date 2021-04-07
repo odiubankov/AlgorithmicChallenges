@@ -27,58 +27,12 @@ GraphT fillGraph(int n, vector<ConnectionT> const& connections) {
     return graph;
 }
 
-void dfs(PathT path, VisitedT& visited, VisitedT& cycleVisited,
-         ComponentsT& components, GraphT const& graph) {
-    int currentServer = path.back();
-    if (cycleVisited[currentServer]) {
-        for (auto it = rbegin(path) + 1; components[*it] != components[currentServer]; ++it) {
-            components[*it] = components[currentServer];
-        }
-        return;
-    }
-
-    if (visited[currentServer]) {
-        return;
-    }
-
-    visited[currentServer] = true;
-    cycleVisited[currentServer] = true;
-    for (auto connection : graph[currentServer]) {
-        if (path.size() == 1 || connection != path[path.size() - 2]) {
-            PathT connectionPath = path;
-//TODO replace copying to pop_back
-            connectionPath.push_back(connection);
-            dfs(connectionPath, visited, cycleVisited, components, graph);
-        }
-    }
-    cycleVisited[currentServer] = false;
-}
-
-vector<vector<int>> criticalConnections(int n, vector<ConnectionT> const& connections) {
-    if (connections.empty())
-        return {};
-
-    auto graph = fillGraph(n, connections);
-    ComponentsT components(n);
-    for (size_t i = 0; i != n; ++i)
-        components[i] = i;
-    VisitedT visited(n, false), cycleVisited(n, false);
-    dfs({0}, visited, cycleVisited, components, graph);
-    vector<vector<int>> criticalConnections;
-    for (auto& connection : connections) {
-        if (components[connection.front()] != components[connection.back()]) {
-            criticalConnections.push_back(connection);
-        }
-    }
-
-    return criticalConnections;
-}
-
 void tarjanDfs(
         int item, int prevItem, GraphT const& graph,
         int& currentRank, ItemRanksT& discoveryRanks, ItemRanksT& lowRanks,
         vector<ConnectionT>& criticalConnections) {
-    lowRanks[item] = discoveryRanks[item] = currentRank++;
+    lowRanks[item] = discoveryRanks[item] = currentRank;
+    ++currentRank;
     for (auto connection : graph.at(item)) {
         if (connection == prevItem)
             continue;
@@ -103,7 +57,7 @@ vector<ConnectionT> criticalConnectionsTarjan(int n, vector<ConnectionT> const& 
     vector<ConnectionT> criticalConnections;
     for (int i = 0; i != n; ++i) {
         if (discoveryRanks[i] == -1) {
-            tarjanDfs(i, -1, graph, currentRank, discoveryRanks, lowRanks, criticalConnections);
+            tarjanDfs(i, 0, graph, currentRank, discoveryRanks, lowRanks, criticalConnections);
         }
     }
 
