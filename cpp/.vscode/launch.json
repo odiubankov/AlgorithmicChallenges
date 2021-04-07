@@ -1,0 +1,32 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "gtest debug",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/algorithmicchallenges",
+            "args": [
+                "--gtest_filter=CriticalConnection*"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}",
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "preLaunchTask": "cmake",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                },
+                {
+                    "description": "Enable break on all-exceptions",
+                    "text": "catch throw",
+                    "ignoreFailures": true
+                }
+            ],
+            "miDebuggerPath": "/usr/bin/gdb",
+        }
+    ]
+}
