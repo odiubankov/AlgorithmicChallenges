@@ -5,29 +5,35 @@
 #include <vector>
 #include <unordered_set>
 #include <unordered_map>
+#include <algorithm>
 
 using namespace std;
 
-using NumsSetT = unordered_set<int>;
-using FinishAtSequenceT = unordered_map<int, int>;
-int getSequenceLength(int val, FinishAtSequenceT& finishAtSequence, const NumsSetT& numSet) {
-    auto prevIt = numSet.find(val - 1);
-    if (prevIt == end(numSet))
-        return 1;
-    auto prevLengthIt = finishAtSequence.find(val - 1);
-    if (prevLengthIt == end(finishAtSequence)) {
-        finishAtSequence[val - 1] = getSequenceLength(val - 1, finishAtSequence, numSet);
-    }
-    finishAtSequence[val] = finishAtSequence[val - 1] + 1;
-    return finishAtSequence[val];
-}
-
 int longestConsecutive(vector<int> const& nums) {
-    int maxLength = 0;
-    NumsSetT numsSet{begin(nums), end(nums)};
-    FinishAtSequenceT finishAtSequence;
+    if (nums.size() < 2)
+        return nums.size();
+
+    unordered_set<int> vals{begin(nums), end(nums)};
+    unordered_map<int, int> lengthEndings;
     for (auto num : nums) {
-        maxLength = std::max(maxLength, getSequenceLength(num, finishAtSequence, numsSet));
+        if (lengthEndings.find(num) != end(lengthEndings))
+            continue;
+        int sequenceBegin = num;
+        for (int i = num - 1; vals.find(i) != end(vals); --i) {
+            sequenceBegin = i;
+            if (lengthEndings.find(i) != end(lengthEndings)) {
+                break;
+            }
+        }
+
+        for (int i = sequenceBegin; i <= num; ++i) {
+            lengthEndings[i] = lengthEndings[i - 1] + 1;
+        }
+    }
+
+    int maxLength = 1;
+    for (auto l : lengthEndings) {
+        maxLength = std::max(maxLength, l.second);
     }
 
     return maxLength;
