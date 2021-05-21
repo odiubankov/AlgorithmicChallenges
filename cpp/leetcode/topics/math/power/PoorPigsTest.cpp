@@ -1,4 +1,4 @@
-#include "../PoorPigs.h"
+#include "PoorPigs.h"
 #include <gtest/gtest.h>
 
 namespace leetcode

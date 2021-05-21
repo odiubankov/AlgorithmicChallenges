@@ -28,8 +28,7 @@ namespace leetcode
 class Solution
 {
 public:
-    std::size_t lengthOfLongestSubstring(std::string s)
-    {
+    std::size_t lengthOfLongestSubstring(std::string s) {
         std::size_t longestSubstrLength = 0;
         std::unordered_set<char> substrChars;
         auto substrBeginIt = begin(s);
@@ -37,10 +36,7 @@ public:
         for (; substrEndIt != end(s); ++substrEndIt) {
             auto insertRes = substrChars.insert(*substrEndIt);
             if (!insertRes.second) {
-                if (static_cast<int>(substrChars.size()) > longestSubstrLength) {
-                    longestSubstrLength = substrChars.size();
-                }
-
+                longestSubstrLength = std::max(longestSubstrLength, substrChars.size());
                 while (*substrBeginIt != *substrEndIt) {
                     substrChars.erase(*substrBeginIt);
                     ++substrBeginIt;
@@ -50,10 +46,7 @@ public:
             }
         }
 
-        if (static_cast<int>(substrChars.size()) > longestSubstrLength) {
-            return substrChars.size();
-        }
-
+        longestSubstrLength = std::max(longestSubstrLength, substrChars.size());
         return longestSubstrLength;
     }
 };

@@ -1,4 +1,4 @@
-#include "../LicenseKeyFormatting.h"
+#include "LicenseKeyFormatting.h"
 #include <gtest/gtest.h>
 
 namespace leetcode

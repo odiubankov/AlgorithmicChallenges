@@ -1,4 +1,4 @@
-#include "../GenerateParentheses.h"
+#include "GenerateParentheses.h"
 #include <gtest/gtest.h>
 
 namespace leetcode

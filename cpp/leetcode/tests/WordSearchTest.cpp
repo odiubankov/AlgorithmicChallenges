@@ -1,4 +1,4 @@
-#include "../WordSearch.h"
+#include "../topics/recursion/WordSearch.h"
 #include <gtest/gtest.h>
 
 namespace leetcode

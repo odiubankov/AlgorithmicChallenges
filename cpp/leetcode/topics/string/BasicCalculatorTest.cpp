@@ -1,4 +1,4 @@
-#include "../BasicCalculator.h"
+#include "BasicCalculator.h"
 #include <gtest/gtest.h>
 
 namespace leetcode {
