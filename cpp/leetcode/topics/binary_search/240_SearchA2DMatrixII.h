@@ -25,7 +25,7 @@ bool searchRectangleInMatrix(const std::vector<std::vector<int>>& matrix, int ta
         return false;
 
     if (midVal > target)
-        return searchRectangleInMatrix(matrix, target, Rect{rect.i, rect.j, midW - rect.j, rect.h}) ||
+        return searchRectangleInMatrix(matrix, target, Rect{rect.i, rect.j, midW - rect.j}) ||
                searchRectangleInMatrix(matrix, target, Rect{rect.i, midW, rect.j + rect.w - midW, midH - rect.i});
     else
         return searchRectangleInMatrix(matrix, target, Rect{rect.i, midW + 1, rect.j + rect.w - midW - 1, rect.h}) ||
