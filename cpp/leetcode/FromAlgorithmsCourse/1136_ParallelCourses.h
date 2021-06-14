@@ -1,3 +1,5 @@
+// https://leetcode.com/problems/parallel-courses/
+
 #ifndef ALGORITHMICCHALLENGES_1136_PARALLELCOURSES_H
 #define ALGORITHMICCHALLENGES_1136_PARALLELCOURSES_H
 

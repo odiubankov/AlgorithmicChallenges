@@ -11,8 +11,7 @@ vector<vector<int>> insert(vector<vector<int>>& intervals, vector<int>& newInter
     auto overlapIntervalsBegin = lower_bound(begin(intervals), end(intervals), vector<int>{newInterval.front(), 0});
     auto overlapIntervalsEnd = overlapIntervalsBegin;
     //merge with previous interval if needed
-    if ((overlapIntervalsBegin == end(intervals) || overlapIntervalsBegin->front() > newInterval.front()) &&
-        overlapIntervalsBegin != begin(intervals) &&
+    if (overlapIntervalsBegin != begin(intervals) &&
         (overlapIntervalsBegin - 1)->back() >= newInterval.front()) {
         --overlapIntervalsBegin;
     }
