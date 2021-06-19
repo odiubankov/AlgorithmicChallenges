@@ -17,7 +17,7 @@ struct NodeDistanceComp {
 
 using NodesQueueT = priority_queue<NodeDistanceT, vector<NodeDistanceT>, NodeDistanceComp>;
 
-int networkDelayTime(const vector<vector<int>>& times, int N, int K) {
+int networkDelayTimeDijkstra(const vector<vector<int>>& times, int N, int K) {
     vector<vector<pair<int , int>>> connections(N);
     for (auto& time : times)
         connections[time[0] - 1].push_back(make_pair(time[1] - 1, time[2]));
@@ -38,6 +38,36 @@ int networkDelayTime(const vector<vector<int>>& times, int N, int K) {
         }
     }
     return all_of(begin(visited), end(visited), [](auto item) { return item; }) ? maxDistance : -1;
+}
+
+int networkDelayTimeBellmanFord(const vector<vector<int>>& times, int N, int K) {
+    vector<vector<pair<int, int>>> edges(N);
+    for (auto& time : times)
+        edges[time[0] - 1].emplace_back(time[1] - 1, time[2]);
+
+    vector<int> verticeTimes(N, numeric_limits<int>::max());
+    queue<int> toVisit;
+    toVisit.push(K - 1);
+    verticeTimes[K - 1] = 0;
+    int visitedVerticesCnt = 1;
+    while (!toVisit.empty()) {
+        int vertice = toVisit.front();
+        toVisit.pop();
+        for (const auto& edge : edges[vertice]) {
+
+            if ((verticeTimes[vertice] + edge.second) < verticeTimes[edge.first]) {
+                if (verticeTimes[edge.first] == numeric_limits<int>::max())
+                    ++visitedVerticesCnt;
+                verticeTimes[edge.first] = (verticeTimes[vertice] + edge.second);
+                toVisit.push(edge.first);
+            }
+        }
+    }
+
+    if (visitedVerticesCnt == N)
+        return *max_element(begin(verticeTimes), end(verticeTimes));
+    else
+        return -1;
 }
 
 #endif //ALGORITHMICCHALLENGES_743_NETWORKDELAYTIME_H
