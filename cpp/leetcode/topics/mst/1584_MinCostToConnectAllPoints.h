@@ -1,3 +1,4 @@
+//https://leetcode.com/problems/min-cost-to-connect-all-points/
 #ifndef ALGORITHMICCHALLENGES_1584_MINCOSTTOCONNECTALLPOINTS_H
 #define ALGORITHMICCHALLENGES_1584_MINCOSTTOCONNECTALLPOINTS_H
 
@@ -71,6 +72,11 @@ int minCostConnectPoints(const PointsT& points) {
     }
 
     return totalLength;
+}
+
+int minCostConnectPointsPrimMst(vector<vector<int>>& points) {
+    unordered_set<size_t> mstPoints;
+    mstPoints.insert()
 }
 
 #endif //ALGORITHMICCHALLENGES_1584_MINCOSTTOCONNECTALLPOINTS_H
