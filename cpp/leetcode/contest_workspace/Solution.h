@@ -17,6 +17,7 @@
 #include <string>
 #include <bitset>
 #include <sstream>
+#include <numeric>
 
 using namespace std;
 
@@ -29,55 +30,85 @@ vector<string> split(const string& s, char delimiter) {
     return tokens;
 }
 
-using ServerT = array<int, 2>;
-using AvailableServersT = priority_queue<ServerT, vector<ServerT>, greater<ServerT>>;
-using TaskServersT = vector<int>;
-using ServersAvilableAtSecT = map<int, vector<ServerT>>;
-using TasksToAssignT = queue<int>;
+using ItemsT = vector<int>;
+using ItemItT = ItemsT::iterator;
 
-vector<int> assignTasks(const vector<int>& servers, const vector<int>& tasks) {
-    AvailableServersT availableServers;
-    for (int index = 0; index != servers.size(); ++index) {
-        availableServers.emplace(ServerT{servers[index], index});
+bool canBeIncreasingImpl(long long prevVal, ItemItT item, ItemItT itemE, bool canSkip) {
+    if (item == itemE)
+        return true;
+
+    if (canSkip) {
+        if (*item > prevVal && canBeIncreasingImpl(*item, item + 1, itemE, true))
+            return true;
+        if (canBeIncreasingImpl(prevVal, item + 1, itemE, false))
+            return true;
+    } else {
+        if (*item <= prevVal)
+            return false;
+        else
+            return canBeIncreasingImpl(*item, item + 1, itemE, false);
+    }
+    return false;
+}
+
+bool canBeIncreasing(ItemsT& nums) {
+    return canBeIncreasingImpl(numeric_limits<long long>::min(), begin(nums), end(nums), true);
+}
+
+string removeOccurrences(string s, string part) {
+    int foundPos = s.find(part, 0);
+    while (foundPos != string::npos) {
+        string newS = s.substr(0, foundPos);
+        newS.append(s.substr(foundPos + part.size()));
+        s = std::move(newS);
+        foundPos = s.find(part, max<int>(0, foundPos - part.size() + 1));
+    }
+    return s;
+}
+
+using ItemsT = vector<int>;
+using IterT = ItemsT::iterator;
+using CacheT = vector<unordered_map<long long, unordered_map<long long, long long>>>;
+long long maxAltSum(bool pos, IterT it, IterT itE, long long posSum, long long negSum, CacheT& cachePos, CacheT& cacheNeg) {
+    int dist = distance(it, itE);
+    CacheT* rightCache;
+    if (pos) {
+        rightCache = &cachePos;
+    } else {
+        rightCache = &cacheNeg;
     }
 
-    TaskServersT taskServers;
-    ServersAvilableAtSecT serversAvailableAtSec;
-    TasksToAssignT tasksToAssign;
-    for (int sec = 0; sec < tasks.size(); ++sec) {
-        for (const auto& server : serversAvailableAtSec[sec]) {
-            availableServers.emplace(server);
-        }
-        serversAvailableAtSec.erase(sec);
-
-        tasksToAssign.push(tasks[sec]);
-
-        while (!availableServers.empty() && !tasksToAssign.empty()) {
-            taskServers.push_back(availableServers.top()[1]);
-            serversAvailableAtSec[sec + tasksToAssign.front()].push_back(availableServers.top());
-            availableServers.pop();
-            tasksToAssign.pop();
-        }
+    auto cacheIt1 = (*rightCache)[dist].find(posSum);
+    if (cacheIt1 != end((*rightCache)[dist])) {
+        auto cache2It = cacheIt1->second.find(negSum);
+        if (cache2It != end(cacheIt1->second))
+            return cache2It->second;
     }
 
-    int currentSecond = 0;
-    while (!tasksToAssign.empty()) {
-        if (availableServers.empty()) {
-            auto availableServersIt = begin(serversAvailableAtSec);
-            currentSecond = availableServersIt->first;
-            for (const auto& server : availableServersIt->second) {
-                availableServers.emplace(server);
-            }
-            serversAvailableAtSec.erase(availableServersIt);
-        }
+    if (it == itE)
+        return posSum - negSum;
 
-        taskServers.push_back(availableServers.top()[1]);
-        serversAvailableAtSec[currentSecond + tasksToAssign.front()].push_back(availableServers.top());
-        availableServers.pop();
-        tasksToAssign.pop();
+    long long maxRes = 0;
+    if (pos) {
+        auto res = maxAltSum(true, it + 1, itE, posSum, negSum, cachePos, cacheNeg);
+        maxRes = max(maxRes, res);
+        res = maxAltSum(false, it + 1, itE, posSum + *it, negSum, cachePos, cacheNeg);
+        maxRes = max(maxRes, res);
+    } else {
+        auto res = maxAltSum(false, it + 1, itE, posSum, negSum, cachePos, cacheNeg);
+        maxRes = max(maxRes, res);
+        res = maxAltSum(true, it + 1, itE, posSum, negSum + *it, cachePos, cacheNeg);
+        maxRes = max(maxRes, res);
     }
 
-    return taskServers;
+    (*rightCache)[dist][posSum][negSum] = maxRes;
+    return maxRes;
+}
+
+long long maxAlternatingSum(vector<int>& nums) {
+    CacheT cachePos(nums.size() + 1);
+    CacheT cacheNeg(nums.size() + 1);
+    return maxAltSum(true, begin(nums), end(nums), 0, 0, cachePos, cacheNeg);
 }
 
 #endif //ALGORITHMICCHALLENGES_SOLUTION_H
